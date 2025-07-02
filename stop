@@ -1,0 +1,1545 @@
+Help on Solution in module cantera.composite object:
+
+class SSoolluuttiioonn(cantera.transport.Transport, cantera.kinetics.Kinetics, cantera.thermo.ThermoPhase)
+ |  A class for chemically-reacting solutions. Instances can be created to
+ |  represent any type of solution -- a mixture of gases, a liquid solution, or
+ |  a solid solution, for example.
+ |
+ |  Class `Solution` derives from classes `ThermoPhase`, `Kinetics`, and
+ |  `Transport`.  It defines no methods of its own, and is provided so that a
+ |  single object can be used to compute thermodynamic, kinetic, and transport
+ |  properties of a solution.
+ |
+ |  To skip initialization of the Transport object, pass the keyword argument
+ |  ``transport_model=None`` to the `Solution` constructor.
+ |
+ |  The most common way to instantiate `Solution` objects is by using a phase
+ |  definition, species and reactions defined in an input file::
+ |
+ |      gas = ct.Solution('gri30.yaml')
+ |
+ |  If an input file defines multiple phases, the corresponding key in the
+ |  ``phases`` map can be used to specify the desired phase via the ``name`` keyword
+ |  argument of the constructor::
+ |
+ |      gas = ct.Solution('diamond.yaml', name='gas')
+ |      diamond = ct.Solution('diamond.yaml', name='diamond')
+ |
+ |  The name of the `Solution` object defaults to the *phase* identifier
+ |  specified in the input file. Upon initialization of a `Solution` object,
+ |  a custom name can assigned via::
+ |
+ |      gas.name = 'my_custom_name'
+ |
+ |  `Solution` objects can also be constructed using `Species` and `Reaction`
+ |  objects which can themselves either be imported from input files or defined
+ |  directly in Python::
+ |
+ |      spec = ct.Species.list_from_file("gri30.yaml")
+ |      spec_gas = ct.Solution(thermo='ideal-gas', species=spec)
+ |      rxns = ct.Reaction.list_from_file("gri30.yaml", spec_gas)
+ |      gas = ct.Solution(thermo='ideal-tas', kinetics='gas',
+ |                        species=spec, reactions=rxns, name='my_custom_name')
+ |
+ |  where the ``thermo`` and ``kinetics`` keyword arguments are strings
+ |  specifying the thermodynamic and kinetics model, respectively, and
+ |  ``species`` and ``reactions`` keyword arguments are lists of `Species` and
+ |  `Reaction` objects, respectively. Note that importing the reactions from a
+ |  YAML input file requires a `Kinetics` object containing the species, as
+ |  shown.
+ |
+ |  Types of underlying models that form the composite `Solution` object are
+ |  queried using the ``thermo_model``, ``kinetics_model`` and
+ |  ``transport_model`` attributes; further, the ``composite`` attribute is a
+ |  shorthand returning a tuple containing the types of the three constitutive
+ |  models.
+ |
+ |  For non-trivial uses cases of this functionality, see the examples
+ |  `extract_submechanism.py <https://cantera.org/examples/python/kinetics/extract_submechanism.py.html>`_
+ |  and `mechanism_reduction.py <https://cantera.org/examples/python/kinetics/mechanism_reduction.py.html>`_.
+ |
+ |  In addition, `Solution` objects can be constructed by passing the text of
+ |  the YAML phase definition in directly, using the ``yaml`` keyword
+ |  argument::
+ |
+ |      yaml_def = '''
+ |      phases:
+ |      - name: gas
+ |        thermo: ideal-gas
+ |        kinetics: gas
+ |        elements: [O, H, Ar]
+ |        species:
+ |        - gri30.yaml/species: all
+ |        reactions:
+ |        - gri30.yaml/reactions: declared-species
+ |        skip-undeclared-elements: true
+ |        skip-undeclared-third-bodies: true
+ |        state: {T: 300, P: 1 atm}
+ |      '''
+ |      gas = ct.Solution(yaml=yaml_def)
+ |
+ |  Method resolution order:
+ |      Solution
+ |      cantera.transport.Transport
+ |      cantera.kinetics.Kinetics
+ |      cantera.thermo.ThermoPhase
+ |      cantera.solutionbase._SolutionBase
+ |      builtins.object
+ |
+ |  Methods inherited from cantera.transport.Transport:
+ |
+ |  ____iinniitt____(self, /, *args, **kwargs)
+ |      Initialize self.  See help(type(self)) for accurate signature.
+ |
+ |  ____rreedduuccee__ccyytthhoonn____(...)
+ |
+ |  ____sseettssttaattee__ccyytthhoonn____(...)
+ |
+ |  ggeett__bbiinnaarryy__ddiiffff__ccooeeffffss__ppoollyynnoommiiaall(self, i, j)
+ |      Get the polynomial fit to the logarithm of temperature for
+ |      the binary diffusion coefficient of species ``i`` and ``j``.
+ |
+ |  ggeett__ccoolllliissiioonn__iinntteeggrraall__ppoollyynnoommiiaallss(self, i, j)
+ |      Get the polynomial fit to the logarithm of temperature for
+ |      the collision integral of species ``i`` and ``j``.
+ |
+ |  ggeett__tthheerrmmaall__ccoonndduuccttiivviittyy__ppoollyynnoommiiaall(self, i)
+ |      Get the polynomial fit to the logarithm of temperature for
+ |      the thermal conductivity of species ``i``.
+ |
+ |  ggeett__vviissccoossiittyy__ppoollyynnoommiiaall(self, i)
+ |      Get the polynomial fit to the logarithm of temperature for
+ |      the viscosity of species ``i``.
+ |
+ |  sseett__bbiinnaarryy__ddiiffff__ccooeeffffss__ppoollyynnoommiiaall(self, i, j, values)
+ |      Set the polynomial fit to the logarithm of temperature for
+ |      the binary diffusion coefficient of species ``i`` and ``j``.
+ |
+ |  sseett__ccoolllliissiioonn__iinntteeggrraall__ppoollyynnoommiiaall(self, i, j, avalues, bvalues, cvalues, actualT=True)
+ |      Get the polynomial fit to the logarithm of temperature for
+ |      the collision integral of species ``i`` and ``j``.
+ |
+ |  sseett__tthheerrmmaall__ccoonndduuccttiivviittyy__ppoollyynnoommiiaall(self, i, values)
+ |      Set the polynomial fit to the logarithm of temperature for
+ |      the thermal conductivity of species ``i``.
+ |
+ |  sseett__vviissccoossiittyy__ppoollyynnoommiiaall(self, i, values)
+ |      Set the polynomial fit to the logarithm of temperature for
+ |      the viscosity of species ``i``.
+ |
+ |  ----------------------------------------------------------------------
+ |  Static methods inherited from cantera.transport.Transport:
+ |
+ |  ____nneeww____(*args, **kwargs) class method of cantera.transport.Transport
+ |      Create and return a new object.  See help(type) for accurate signature.
+ |
+ |  ----------------------------------------------------------------------
+ |  Data descriptors inherited from cantera.transport.Transport:
+ |
+ |  CCKK__mmooddee
+ |      Boolean to indicate if the chemkin interpretation is used.
+ |
+ |  bbiinnaarryy__ddiiffff__ccooeeffffss
+ |      Binary diffusion coefficients [m^2/s].
+ |
+ |  eelleeccttrriiccaall__ccoonndduuccttiivviittyy
+ |      Electrical conductivity. [S/m].
+ |
+ |  mmiixx__ddiiffff__ccooeeffffss
+ |      Mixture-averaged diffusion coefficients [m^2/s] relating the
+ |      mass-averaged diffusive fluxes (with respect to the mass averaged
+ |      velocity) to gradients in the species mole fractions.
+ |
+ |  mmiixx__ddiiffff__ccooeeffffss__mmaassss
+ |      Mixture-averaged diffusion coefficients [m^2/s] relating the
+ |      diffusive mass fluxes to gradients in the species mass fractions.
+ |
+ |  mmiixx__ddiiffff__ccooeeffffss__mmoollee
+ |      Mixture-averaged diffusion coefficients [m^2/s] relating the
+ |      molar diffusive fluxes to gradients in the species mole fractions.
+ |
+ |  mmoobbiilliittiieess
+ |      Electrical mobilities of charged species [m^2/s-V]
+ |
+ |  mmuullttii__ddiiffff__ccooeeffffss
+ |      Multicomponent diffusion coefficients, D[i,j], the diffusion
+ |      coefficient for species i due to concentration gradients in
+ |      species j [m**2/s].
+ |
+ |  ssppeecciieess__vviissccoossiittiieess
+ |      Pure species viscosities [Pa-s]
+ |
+ |  tthheerrmmaall__ccoonndduuccttiivviittyy
+ |      Thermal conductivity. [W/m/K]
+ |
+ |  tthheerrmmaall__ddiiffff__ccooeeffffss
+ |      Return a one-dimensional array of the species thermal diffusion
+ |      coefficients [kg/m/s].
+ |
+ |  ttrraannssppoorrtt__mmooddeell
+ |      Get/Set the transport model associated with this transport model.
+ |
+ |      Setting a new transport model deletes the underlying C++ Transport
+ |      object and replaces it with a new one implementing the specified model.
+ |
+ |  vviissccoossiittyy
+ |      Viscosity [Pa-s].
+ |
+ |  ----------------------------------------------------------------------
+ |  Methods inherited from cantera.kinetics.Kinetics:
+ |
+ |  aadddd__rreeaaccttiioonn(self, rxn)
+ |      Add a new reaction to this phase.
+ |
+ |  kkiinneettiiccss__ssppeecciieess__iinnddeexx(self, species, phase=0)
+ |      The index of species ``species`` of phase ``phase`` within arrays returned
+ |      by methods of class `Kinetics`. If ``species`` is a string, the ``phase``
+ |      argument is unused.
+ |
+ |  kkiinneettiiccss__ssppeecciieess__nnaammee(self, k)
+ |      Name of the species with index ``k`` in the arrays returned by methods
+ |      of class `Kinetics`.
+ |
+ |  mmooddiiffyy__rreeaaccttiioonn(self, irxn, rxn)
+ |      Modify the `Reaction` with index ``irxn`` to have the same rate
+ |      parameters as ``rxn``. ``rxn`` must have the same reactants and products
+ |      and be of the same type (for example, `ElementaryReaction`, `FalloffReaction`,
+ |      `PlogReaction`, etc.) as the existing reaction. This method does not
+ |      modify the third-body efficiencies, reaction orders, or reversibility of
+ |      the reaction.
+ |
+ |  mmuullttiipplliieerr(self, i_reaction)
+ |      A scaling factor applied to the rate coefficient for reaction
+ |      ``i_reaction``. Can be used to carry out sensitivity analysis or to
+ |      selectively disable a particular reaction. See `set_multiplier`.
+ |
+ |  pprroodduucctt__ssttooiicchh__ccooeeffff(self, k_spec, i_reaction)
+ |      The stoichiometric coefficient of species ``k_spec`` as a product in
+ |      reaction ``i_reaction``.
+ |
+ |  rreeaaccttaanntt__ssttooiicchh__ccooeeffff(self, k_spec, i_reaction)
+ |      The stoichiometric coefficient of species ``k_spec`` as a reactant in
+ |      reaction ``i_reaction``.
+ |
+ |  rreeaaccttiioonn(self, i_reaction)
+ |      Return a `Reaction` object representing the reaction with index
+ |      ``i_reaction``. Changes to this object do not affect the `Kinetics` or
+ |      `Solution` object until the `modify_reaction` function is called.
+ |
+ |  rreeaaccttiioonn__eeqquuaattiioonnss(self, indices=None)
+ |      Returns a list containing the reaction equation for all reactions in the
+ |      mechanism if ``indices`` is unspecified, or the equations for each
+ |      reaction in the sequence ``indices``. For example::
+ |
+ |          >>> gas.reaction_equations()
+ |          ['2 O + M <=> O2 + M', 'O + H + M <=> OH + M', 'O + H2 <=> H + OH', ...]
+ |          >>> gas.reaction_equations([2,3])
+ |          ['O + H + M <=> OH + M', 'O + H2 <=> H + OH']
+ |
+ |      See also `reaction_equation`.
+ |
+ |  rreeaaccttiioonnss(self)
+ |      Return a list of all `Reaction` objects. Changes to these objects do not
+ |      affect the `Kinetics` or `Solution` object until the `modify_reaction`
+ |      function is called.
+ |
+ |  sseett__mmuullttiipplliieerr(self, value, i_reaction=-1)
+ |      Set the multiplier for for reaction ``i_reaction`` to ``value``.
+ |      If ``i_reaction`` is not specified, then the multiplier for all reactions
+ |      is set to ``value``. See `multiplier`.
+ |
+ |  ----------------------------------------------------------------------
+ |  Data descriptors inherited from cantera.kinetics.Kinetics:
+ |
+ |  ccrreeaattiioonn__rraatteess
+ |      Creation rates for each species. [kmol/m^3/s] for bulk phases or
+ |      [kmol/m^2/s] for surface phases.
+ |
+ |  ccrreeaattiioonn__rraatteess__ddddCC
+ |      Calculate derivatives of species creation rates with respect to molar
+ |      concentration at constant temperature, pressure and mole fractions.
+ |
+ |      .. warning::
+ |
+ |          This property is an experimental part of the Cantera API and
+ |          may be changed or removed without notice.
+ |
+ |  ccrreeaattiioonn__rraatteess__ddddCCii
+ |      Calculate derivatives for species creation rates with respect to species
+ |      concentration at constant temperature, pressure, and concentration of all other
+ |      species. For sparse output, set ``ct.use_sparse(True)``.
+ |
+ |      The method returns a matrix with `n_total_species` rows and `n_total_species`
+ |      columns.
+ |
+ |      For a derivative with respect to :math: `c_i`, all other :math: `c_i` are
+ |      held constant.
+ |
+ |      .. warning::
+ |
+ |          This property is an experimental part of the Cantera API and
+ |          may be changed or removed without notice.
+ |
+ |      .. versionadded:: 3.0
+ |
+ |  ccrreeaattiioonn__rraatteess__ddddPP
+ |      Calculate derivatives of species creation rates with respect to pressure
+ |      at constant temperature, molar concentration and mole fractions.
+ |
+ |  ccrreeaattiioonn__rraatteess__ddddTT
+ |      Calculate derivatives of species creation rates with respect to temperature
+ |      at constant pressure, molar concentration and mole fractions.
+ |
+ |  ccrreeaattiioonn__rraatteess__ddddXX
+ |      Calculate derivatives for species creation rates with respect to species
+ |      concentrations at constant temperature, pressure and molar concentration.
+ |      For sparse output, set ``ct.use_sparse(True)``.
+ |
+ |      Note that for derivatives with respect to :math:`X_i`, all other :math:`X_j`
+ |      are held constant, rather than enforcing :math:`\sum X_j = 1`.
+ |
+ |      .. warning::
+ |
+ |          This property is an experimental part of the Cantera API and
+ |          may be changed or removed without notice.
+ |
+ |  ddeellttaa__eenntthhaallppyy
+ |      Change in enthalpy for each reaction [J/kmol].
+ |
+ |  ddeellttaa__eennttrrooppyy
+ |      Change in entropy for each reaction [J/kmol/K].
+ |
+ |  ddeellttaa__ggiibbbbss
+ |      Change in Gibbs free energy for each reaction [J/kmol].
+ |
+ |  ddeellttaa__ssttaannddaarrdd__eenntthhaallppyy
+ |      Change in standard-state enthalpy (independent of composition) for
+ |      each reaction [J/kmol].
+ |
+ |  ddeellttaa__ssttaannddaarrdd__eennttrrooppyy
+ |      Change in standard-state entropy (independent of composition) for
+ |      each reaction [J/kmol/K].
+ |
+ |  ddeellttaa__ssttaannddaarrdd__ggiibbbbss
+ |      Change in standard-state Gibbs free energy (independent of composition)
+ |      for each reaction [J/kmol].
+ |
+ |  ddeerriivvaattiivvee__sseettttiinnggss
+ |      Property setting behavior of derivative evaluation.
+ |
+ |      For ``GasKinetics``, the following keyword/value pairs are supported:
+ |
+ |      -  ``skip-third-bodies`` (boolean) ... if `False` (default), third body
+ |         concentrations are considered for the evaluation of derivatives
+ |
+ |      -  ``skip-falloff`` (boolean) ... if `True` (default), third-body effects
+ |         on reaction rates are not considered.
+ |
+ |      -  ``rtol-delta`` (double) ... relative tolerance used to perturb properties
+ |         when calculating numerical derivatives. The default value is 1e-8.
+ |
+ |      Derivative settings are updated using a dictionary::
+ |
+ |          >>> gas.derivative_settings = {"skip-falloff": True}
+ |
+ |      Passing an empty dictionary will reset all values to their defaults.
+ |
+ |  ddeessttrruuccttiioonn__rraatteess
+ |      Destruction rates for each species. [kmol/m^3/s] for bulk phases or
+ |      [kmol/m^2/s] for surface phases.
+ |
+ |  ddeessttrruuccttiioonn__rraatteess__ddddCC
+ |      Calculate derivatives of species destruction rates with respect to molar
+ |      concentration at constant temperature, pressure and mole fractions.
+ |
+ |      .. warning::
+ |
+ |          This property is an experimental part of the Cantera API and
+ |          may be changed or removed without notice.
+ |
+ |  ddeessttrruuccttiioonn__rraatteess__ddddCCii
+ |      Calculate derivatives for species destruction rates with respect to species
+ |      concentration at constant temperature, pressure, and concentration of all other
+ |      species. For sparse output, set ``ct.use_sparse(True)``.
+ |
+ |      The method returns a matrix with `n_total_species` rows and `n_total_species` columns.
+ |      For a derivative with respect to :math: `c_i`, all other :math: `c_i` are
+ |      held constant.
+ |
+ |      .. warning::
+ |
+ |          This property is an experimental part of the Cantera API and
+ |          may be changed or removed without notice.
+ |
+ |      .. versionadded:: 3.0
+ |
+ |  ddeessttrruuccttiioonn__rraatteess__ddddPP
+ |      Calculate derivatives of species destruction rates with respect to pressure
+ |      at constant temperature, molar concentration and mole fractions.
+ |
+ |  ddeessttrruuccttiioonn__rraatteess__ddddTT
+ |      Calculate derivatives of species destruction rates with respect to temperature
+ |      at constant pressure, molar concentration and mole fractions.
+ |
+ |  ddeessttrruuccttiioonn__rraatteess__ddddXX
+ |      Calculate derivatives for species destruction rates with respect to species
+ |      concentrations at constant temperature, pressure and molar concentration.
+ |      For sparse output, set ``ct.use_sparse(True)``.
+ |
+ |      Note that for derivatives with respect to :math:`X_i`, all other :math:`X_j`
+ |      are held constant, rather than enforcing :math:`\sum X_j = 1`.
+ |
+ |      .. warning::
+ |
+ |          This property is an experimental part of the Cantera API and
+ |          may be changed or removed without notice.
+ |
+ |  eeqquuiilliibbrriiuumm__ccoonnssttaannttss
+ |      Equilibrium constants in concentration units for all reactions.
+ |
+ |  ffoorrwwaarrdd__rraattee__ccoonnssttaannttss
+ |      Forward rate constants for all reactions.
+ |
+ |      The computed values include all temperature-dependent and pressure-dependent
+ |      contributions. By default, third-body concentrations are only considered if
+ |      they are part of the reaction rate definition; for a legacy implementation that
+ |      includes third-body concentrations, see `use_legacy_rate_constants`.
+ |
+ |  ffoorrwwaarrdd__rraattee__ccoonnssttaannttss__ddddCC
+ |      Calculate derivatives for forward rate constants with respect to molar
+ |      concentration at constant temperature, pressure and mole fractions.
+ |
+ |      .. warning::
+ |
+ |          This property is an experimental part of the Cantera API and
+ |          may be changed or removed without notice.
+ |
+ |  ffoorrwwaarrdd__rraattee__ccoonnssttaannttss__ddddPP
+ |      Calculate derivatives for forward rate constants with respect to pressure
+ |      at constant temperature, molar concentration and mole fractions.
+ |
+ |  ffoorrwwaarrdd__rraattee__ccoonnssttaannttss__ddddTT
+ |      Calculate derivatives for forward rate constants with respect to temperature
+ |      at constant pressure, molar concentration and mole fractions.
+ |
+ |  ffoorrwwaarrdd__rraatteess__ooff__pprrooggrreessss
+ |      Forward rates of progress for the reactions. [kmol/m^3/s] for bulk
+ |      phases or [kmol/m^2/s] for surface phases.
+ |
+ |  ffoorrwwaarrdd__rraatteess__ooff__pprrooggrreessss__ddddCC
+ |      Calculate derivatives for forward rates-of-progress with respect to molar
+ |      concentration at constant temperature, pressure and mole fractions.
+ |
+ |      .. warning::
+ |
+ |          This property is an experimental part of the Cantera API and
+ |          may be changed or removed without notice.
+ |
+ |  ffoorrwwaarrdd__rraatteess__ooff__pprrooggrreessss__ddddCCii
+ |      Calculate derivatives for forward rates-of-progress with respect to species
+ |      concentrations at constant temperature, pressure and remaining species
+ |      concentrations.
+ |      For sparse output, set ``ct.use_sparse(True)``.
+ |
+ |      Note that for derivatives with respect to :math:`c_i`, all other :math:`c_j`
+ |      are held constant.
+ |
+ |      .. warning::
+ |
+ |          This property is an experimental part of the Cantera API and
+ |          may be changed or removed without notice.
+ |
+ |      .. versionadded:: 3.0
+ |
+ |  ffoorrwwaarrdd__rraatteess__ooff__pprrooggrreessss__ddddPP
+ |      Calculate derivatives for forward rates-of-progress with respect to pressure
+ |      at constant temperature, molar concentration and mole fractions.
+ |
+ |  ffoorrwwaarrdd__rraatteess__ooff__pprrooggrreessss__ddddTT
+ |      Calculate derivatives for forward rates-of-progress with respect to temperature
+ |      at constant pressure, molar concentration and mole fractions.
+ |
+ |  ffoorrwwaarrdd__rraatteess__ooff__pprrooggrreessss__ddddXX
+ |      Calculate derivatives for forward rates-of-progress with respect to species
+ |      concentrations at constant temperature, pressure and molar concentration.
+ |      For sparse output, set ``ct.use_sparse(True)``.
+ |
+ |      Note that for derivatives with respect to :math:`X_i`, all other :math:`X_j`
+ |      are held constant, rather than enforcing :math:`\sum X_j = 1`.
+ |
+ |      .. warning::
+ |
+ |          This property is an experimental part of the Cantera API and
+ |          may be changed or removed without notice.
+ |
+ |  hheeaatt__pprroodduuccttiioonn__rraatteess
+ |      Get the volumetric heat production rates [W/m^3] on a per-reaction
+ |      basis. The sum over all reactions results in the total volumetric heat
+ |      release rate.
+ |      Example: C. K. Law: Combustion Physics (2006), Fig. 7.8.6
+ |
+ |      >>> gas.heat_production_rates[1]  # heat production rate of the 2nd reaction
+ |
+ |  hheeaatt__rreelleeaassee__rraattee
+ |      Get the total volumetric heat release rate [W/m^3].
+ |
+ |  kkiinneettiiccss__mmooddeell
+ |      Return type of kinetics.
+ |
+ |  kkiinneettiiccss__ssppeecciieess__nnaammeess
+ |      A list of all species names, corresponding to the arrays returned by
+ |      methods of class `Kinetics`.
+ |
+ |  nn__pphhaasseess
+ |      Number of phases in the reaction mechanism.
+ |
+ |  nn__rreeaaccttiioonnss
+ |      Number of reactions in the reaction mechanism.
+ |
+ |  nn__ttoottaall__ssppeecciieess
+ |      Total number of species in all phases participating in the kinetics
+ |      mechanism.
+ |
+ |  nneett__pprroodduuccttiioonn__rraatteess
+ |      Net production rates for each species. [kmol/m^3/s] for bulk phases or
+ |      [kmol/m^2/s] for surface phases.
+ |
+ |  nneett__pprroodduuccttiioonn__rraatteess__ddddCC
+ |      Calculate derivatives of species net production rates with respect to molar
+ |      density at constant temperature, pressure and mole fractions.
+ |
+ |      .. warning::
+ |
+ |          This property is an experimental part of the Cantera API and
+ |          may be changed or removed without notice.
+ |
+ |  nneett__pprroodduuccttiioonn__rraatteess__ddddCCii
+ |      Calculate derivatives for species net production rates with respect to species
+ |      concentration at constant temperature, pressure, and concentration of all other
+ |      species. For sparse output, set ``ct.use_sparse(True)``.
+ |
+ |      The method returns a matrix with `n_total_species` rows and `n_total_species` columns.
+ |      For a derivative with respect to :math: `c_i`, all other :math: `c_i` are
+ |      held constant.
+ |
+ |      .. warning::
+ |
+ |          This property is an experimental part of the Cantera API and
+ |          may be changed or removed without notice.
+ |
+ |      .. versionadded:: 3.0
+ |
+ |  nneett__pprroodduuccttiioonn__rraatteess__ddddPP
+ |      Calculate derivatives of species net production rates with respect to pressure
+ |      at constant temperature, molar concentration and mole fractions.
+ |
+ |  nneett__pprroodduuccttiioonn__rraatteess__ddddTT
+ |      Calculate derivatives of species net production rates with respect to
+ |      temperature at constant pressure, molar concentration and mole fractions.
+ |
+ |  nneett__pprroodduuccttiioonn__rraatteess__ddddXX
+ |      Calculate derivatives for species net production rates with respect to species
+ |      concentrations at constant temperature, pressure and molar concentration.
+ |      For sparse output, set ``ct.use_sparse(True)``.
+ |
+ |      Note that for derivatives with respect to :math:`X_i`, all other :math:`X_j`
+ |      are held constant, rather than enforcing :math:`\sum X_j = 1`.
+ |
+ |      .. warning::
+ |
+ |          This property is an experimental part of the Cantera API and
+ |          may be changed or removed without notice.
+ |
+ |  nneett__rraatteess__ooff__pprrooggrreessss
+ |      Net rates of progress for the reactions. [kmol/m^3/s] for bulk phases
+ |      or [kmol/m^2/s] for surface phases.
+ |
+ |  nneett__rraatteess__ooff__pprrooggrreessss__ddddCC
+ |      Calculate derivatives for net rates-of-progress with respect to molar
+ |      concentration at constant temperature, pressure and mole fractions.
+ |
+ |      .. warning::
+ |
+ |          This property is an experimental part of the Cantera API and
+ |          may be changed or removed without notice.
+ |
+ |  nneett__rraatteess__ooff__pprrooggrreessss__ddddCCii
+ |      Calculate derivatives for net rates-of-progress with respect to species
+ |      concentrations at constant temperature, pressure and remaining species
+ |      concentrations. For sparse output, set ``ct.use_sparse(True)``.
+ |
+ |      Note that for derivatives with respect to :math:`c_i`, all other :math:`c_j`
+ |      are held constant.
+ |
+ |      .. warning::
+ |
+ |          This property is an experimental part of the Cantera API and
+ |          may be changed or removed without notice.
+ |
+ |      .. versionadded:: 3.0
+ |
+ |  nneett__rraatteess__ooff__pprrooggrreessss__ddddPP
+ |      Calculate derivatives for net rates-of-progress with respect to pressure
+ |      at constant temperature, molar concentration and mole fractions.
+ |
+ |  nneett__rraatteess__ooff__pprrooggrreessss__ddddTT
+ |      Calculate derivatives for net rates-of-progress with respect to temperature
+ |      at constant pressure, molar concentration and mole fractions.
+ |
+ |  nneett__rraatteess__ooff__pprrooggrreessss__ddddXX
+ |      Calculate derivatives for net rates-of-progress with respect to species
+ |      concentrations at constant temperature, pressure and molar concentration.
+ |      For sparse output, set ``ct.use_sparse(True)``.
+ |
+ |      Note that for derivatives with respect to :math:`X_i`, all other :math:`X_j`
+ |      are held constant, rather than enforcing :math:`\sum X_j = 1`.
+ |
+ |      .. warning::
+ |
+ |          This property is an experimental part of the Cantera API and
+ |          may be changed or removed without notice.
+ |
+ |  pprroodduucctt__ssttooiicchh__ccooeeffffss
+ |      The array of product stoichiometric coefficients. Element ``[k,i]`` of
+ |      this array is the product stoichiometric coefficient of species ``k`` in
+ |      reaction ``i``.
+ |
+ |      For sparse output, set ``ct.use_sparse(True)``.
+ |
+ |      .. versionchanged:: 3.0
+ |
+ |          Method was changed to a property in Cantera 3.0.
+ |
+ |  pprroodduucctt__ssttooiicchh__ccooeeffffss33
+ |      The array of product stoichiometric coefficients. Element ``[k,i]`` of
+ |      this array is the product stoichiometric coefficient of species ``k`` in
+ |      reaction ``i``.
+ |
+ |      For sparse output, set ``ct.use_sparse(True)``.
+ |
+ |      .. deprecated:: 3.0
+ |
+ |          Method to be removed after Cantera 3.0. Replaceable by
+ |          `Kinetics.product_stoich_coeffs`
+ |
+ |  pprroodduucctt__ssttooiicchh__ccooeeffffss__rreevveerrssiibbllee
+ |      The array of product stoichiometric coefficients of reversible reactions.
+ |      Element ``[k,i]`` of this array is the product stoichiometric coefficient
+ |      of species ``k`` in reaction ``i``.
+ |
+ |      For sparse output, set ``ct.use_sparse(True)``.
+ |
+ |  rreeaaccttaanntt__ssttooiicchh__ccooeeffffss
+ |      The array of reactant stoichiometric coefficients. Element ``[k,i]`` of
+ |      this array is the reactant stoichiometric coefficient of species ``k`` in
+ |      reaction ``i``.
+ |
+ |      For sparse output, set ``ct.use_sparse(True)``.
+ |
+ |      .. versionchanged:: 3.0
+ |
+ |          Method was changed to a property in Cantera 3.0.
+ |
+ |  rreeaaccttaanntt__ssttooiicchh__ccooeeffffss33
+ |      The array of reactant stoichiometric coefficients. Element ``[k,i]`` of
+ |      this array is the reactant stoichiometric coefficient of species ``k`` in
+ |      reaction ``i``.
+ |
+ |      For sparse output, set ``ct.use_sparse(True)``.
+ |
+ |      .. deprecated:: 3.0
+ |
+ |          Method to be removed after Cantera 3.0. Replaceable by
+ |          `Kinetics.reactant_stoich_coeffs`
+ |
+ |  rreeaaccttiioonn__pphhaassee__iinnddeexx
+ |      The index of the phase where the reactions occur.
+ |
+ |      .. deprecated:: 3.0
+ |
+ |          After Cantera 3.0, the reacting phase is always the first phase associated
+ |          with the Kinetics object. This method will be removed after Cantera 3.1.
+ |
+ |  rreevveerrssee__rraattee__ccoonnssttaannttss
+ |      Reverse rate constants for all reactions.
+ |
+ |      The computed values include all temperature-dependent and pressure-dependent
+ |      contributions. By default, third-body concentrations are only considered if
+ |      they are part of the reaction rate definition; for a legacy implementation that
+ |      includes third-body concentrations, see `use_legacy_rate_constants`.
+ |
+ |  rreevveerrssee__rraatteess__ooff__pprrooggrreessss
+ |      Reverse rates of progress for the reactions. [kmol/m^3/s] for bulk
+ |      phases or [kmol/m^2/s] for surface phases.
+ |
+ |  rreevveerrssee__rraatteess__ooff__pprrooggrreessss__ddddCC
+ |      Calculate derivatives for reverse rates-of-progress with respect to molar
+ |      concentration at constant temperature, pressure and mole fractions.
+ |
+ |      .. warning::
+ |
+ |          This property is an experimental part of the Cantera API and
+ |          may be changed or removed without notice.
+ |
+ |  rreevveerrssee__rraatteess__ooff__pprrooggrreessss__ddddCCii
+ |      Calculate derivatives for reverse rates-of-progress with respect to species
+ |      concentrations at constant temperature, pressure and remaining species
+ |      concentrations.
+ |      For sparse output, set ``ct.use_sparse(True)``.
+ |
+ |      Note that for derivatives with respect to :math:`c_i`, all other :math:`c_j`
+ |      are held constant.
+ |
+ |      .. warning::
+ |
+ |          This property is an experimental part of the Cantera API and
+ |          may be changed or removed without notice.
+ |
+ |      .. versionadded:: 3.0
+ |
+ |  rreevveerrssee__rraatteess__ooff__pprrooggrreessss__ddddPP
+ |      Calculate derivatives for reverse rates-of-progress with respect to pressure
+ |      at constant temperature, molar concentration and mole fractions.
+ |
+ |  rreevveerrssee__rraatteess__ooff__pprrooggrreessss__ddddTT
+ |      Calculate derivatives for reverse rates-of-progress with respect to temperature
+ |      at constant pressure, molar concentration and mole fractions.
+ |
+ |  rreevveerrssee__rraatteess__ooff__pprrooggrreessss__ddddXX
+ |      Calculate derivatives for reverse rates-of-progress with respect to species
+ |      concentrations at constant temperature, pressure and molar concentration.
+ |      For sparse output, set ``ct.use_sparse(True)``.
+ |
+ |      Note that for derivatives with respect to :math:`X_i`, all other :math:`X_j`
+ |      are held constant, rather than enforcing :math:`\sum X_j = 1`.
+ |
+ |      .. warning::
+ |
+ |          This property is an experimental part of the Cantera API and
+ |          may be changed or removed without notice.
+ |
+ |  tthhiirrdd__bbooddyy__ccoonncceennttrraattiioonnss
+ |      Effective third-body concentrations used by individual reactions; values
+ |      are only defined for reactions involving third-bodies and are set to
+ |      not-a-number otherwise.
+ |
+ |  ----------------------------------------------------------------------
+ |  Methods inherited from cantera.thermo.ThermoPhase:
+ |
+ |  ____ccaallll____(self, /, *args, **kwargs)
+ |      Call self as a function.
+ |
+ |  aadddd__ssppeecciieess(self, species)
+ |      Add a new species to this phase. Missing elements will be added
+ |      automatically.
+ |
+ |  aadddd__ssppeecciieess__aalliiaass(self, name, alias)
+ |      Add the alternate species name ``alias`` for an original species ``name``.
+ |
+ |  aattoommiicc__wweeiigghhtt(self, m)
+ |      Atomic weight [kg/kmol] of element ``m``
+ |
+ |  eelleemmeenntt__iinnddeexx(self, element)
+ |      The index of element ``element``, which may be specified as a string or
+ |      an integer. In the latter case, the index is checked for validity and
+ |      returned. If no such element is present, an exception is thrown.
+ |
+ |  eelleemmeenntt__nnaammee(self, m)
+ |      Name of the element with index ``m``.
+ |
+ |  eelleemmeennttaall__mmaassss__ffrraaccttiioonn(self, m)
+ |      Get the elemental mass fraction :math:`Z_{\mathrm{mass},m}` of element
+ |      :math:`m` as defined by:
+ |
+ |      .. math:: Z_{\mathrm{mass},m} = \sum_k \frac{a_{m,k} M_m}{M_k} Y_k
+ |
+ |      with :math:`a_{m,k}` being the number of atoms of element :math:`m` in
+ |      species :math:`k`, :math:`M_m` the atomic weight of element :math:`m`,
+ |      :math:`M_k` the molecular weight of species :math:`k`, and :math:`Y_k`
+ |      the mass fraction of species :math:`k`::
+ |
+ |          >>> phase.elemental_mass_fraction('H')
+ |          1.0
+ |
+ |      :param m:
+ |          Base element, may be specified by name or by index.
+ |
+ |  eelleemmeennttaall__mmoollee__ffrraaccttiioonn(self, m)
+ |      Get the elemental mole fraction :math:`Z_{\mathrm{mole},m}` of element
+ |      :math:`m` (the number of atoms of element m divided by the total number
+ |      of atoms) as defined by:
+ |
+ |      .. math:: Z_{\mathrm{mole},m} = \frac{\sum_k a_{m,k} X_k}
+ |                                           {\sum_k \sum_j a_{j,k} X_k}
+ |
+ |      with :math:`a_{m,k}` being the number of atoms of element :math:`m` in
+ |      species :math:`k`, :math:`\sum_j` being a sum over all elements, and
+ |      :math:`X_k` being the mole fraction of species :math:`k`::
+ |
+ |          >>> phase.elemental_mole_fraction('H')
+ |          1.0
+ |
+ |      :param m:
+ |          Base element, may be specified by name or by index.
+ |
+ |  eeqquuiilliibbrraattee(self, XY, solver='auto', rtol=1e-09, max_steps=1000, max_iter=100, estimate_equil=0, log_level=0)
+ |      Set to a state of chemical equilibrium holding property pair
+ |      ``XY`` constant.
+ |
+ |      :param XY:
+ |          A two-letter string, which must be one of the set::
+ |
+ |              ['TP','TV','HP','SP','SV','UV']
+ |
+ |      :param solver:
+ |          Specifies the equilibrium solver to use. May be one of the following:
+ |
+ |          * ``'element_potential'`` - a fast solver using the element potential
+ |            method
+ |          * ``'gibbs'`` - a slower but more robust Gibbs minimization solver
+ |          * ``'vcs'`` - the VCS non-ideal equilibrium solver
+ |          * ``'auto'`` - The element potential solver will be tried first, then
+ |            if it fails the Gibbs solver will be tried.
+ |      :param rtol:
+ |          The relative error tolerance.
+ |      :param max_steps:
+ |          The maximum number of steps in composition to take to find a converged
+ |          solution.
+ |      :param max_iter:
+ |          For the Gibbs minimization solver, this specifies the number of
+ |          outer iterations on T or P when some property pair other
+ |          than TP is specified.
+ |      :param estimate_equil:
+ |          Integer indicating whether the solver should estimate its own
+ |          initial condition. If 0, the initial mole fraction vector in the
+ |          `ThermoPhase` object is used as the initial condition. If 1, the
+ |          initial mole fraction vector is used if the element abundances are
+ |          satisfied. If -1, the initial mole fraction vector is thrown out,
+ |          and an estimate is formulated.
+ |      :param log_level:
+ |          Set to a value greater than 0 to write diagnostic output.
+ |
+ |  eeqquuiivvaalleennccee__rraattiioo(self, fuel=None, oxidizer=None, basis='mole', include_species=None)
+ |      Get the equivalence ratio :math:`\phi` of the current mixture, which is a
+ |      conserved quantity. Considers the oxidation of C to CO2, H to H2O
+ |      and S to SO2. Other elements are assumed not to participate in oxidation
+ |      (that is, N ends up as N2). If fuel and oxidizer are not specified, the
+ |      equivalence ratio is computed from the available oxygen and the
+ |      required oxygen for complete oxidation:
+ |
+ |      .. math:: \phi = \frac{Z_{\mathrm{mole},C} + Z_{\mathrm{mole},S}
+ |                + \frac{1}{4}Z_{\mathrm{mole},H}} {\frac{1}{2}Z_{\mathrm{mole},O}}
+ |
+ |      where :math:`Z_{\mathrm{mole},e}` is the elemental mole fraction of element
+ |      :math:`e`. If the fuel and oxidizer compositions are specified, :math:`\phi` is
+ |      computed from:
+ |
+ |      .. math:: \phi = \frac{Z}{1-Z}\frac{1-Z_{\mathrm{st}}}{Z_{\mathrm{st}}}
+ |
+ |      where :math:`Z` is the Bilger mixture fraction and :math:`Z_{\mathrm{st}}`
+ |      the Bilger mixture fraction at stoichiometric conditions.
+ |      The ``basis`` determines the composition of fuel and oxidizer:
+ |      ``basis='mole'`` (default) means mole fractions, ``basis='mass'`` means
+ |      mass fractions. Note that this definition takes all species into account.
+ |      In case certain species like inert diluents should be ignored, a
+ |      list of species can be provided with ``include_species``. This means that
+ |      only these species are considered for the computation of the equivalence
+ |      ratio. For more information, see `Python example
+ |      <https://cantera.org/examples/python/thermo/equivalenceRatio.py.html>`_ ::
+ |
+ |          >>> gas.set_equivalence_ratio(0.5, fuel='CH3:0.5, CH3OH:.5, N2:0.125', oxidizer='O2:0.21, N2:0.79, NO:0.01')
+ |          >>> gas.equivalence_ratio(fuel='CH3:0.5, CH3OH:.5, N2:0.125', oxidizer='O2:0.21, N2:0.79, NO:0.01')
+ |          0.5
+ |
+ |      :param fuel:
+ |          Fuel species name or mole/mass fractions as string, array, or dict.
+ |      :param oxidizer:
+ |          Oxidizer species name or mole/mass fractions as a string, array, or dict.
+ |      :param basis:
+ |          Determines if ``fuel`` and ``oxidizer`` are given in mole fractions
+ |          (``basis="mole"``) or mass fractions (``basis="mass"``)
+ |      :param include_species:
+ |          List of species names (optional). Only these species are considered for the
+ |          computation of the equivalence ratio. By default, all species are considered
+ |
+ |  ffiinndd__iissoommeerrss(self, comp)
+ |      Find species/isomers matching a composition specified by ``comp``.
+ |
+ |  mmaassss__ffrraaccttiioonn__ddiicctt(self, threshold=0.0)
+ |      Return a dictionary giving the mass fraction for each species by name where the
+ |      mass fraction is greater than ``threshold``.
+ |
+ |  mmiixxttuurree__ffrraaccttiioonn(self, fuel, oxidizer, basis='mole', element='Bilger')
+ |      Get the mixture fraction of the current mixture in
+ |      (kg fuel / (kg oxidizer + kg fuel)). This is a quantity that is conserved after
+ |      oxidation. Considers the oxidation of C to CO2, H to H2O and S to SO2. Other
+ |      elements are assumed not to participate in oxidation (that is, N ends up as N2).
+ |      The ``basis`` determines the composition of fuel and oxidizer:
+ |      ``basis="mole"`` (default) means mole fractions, ``basis="mass"`` means mass
+ |      fractions. The mixture fraction can be computed from a single element (for
+ |      example, carbon with ``element="C"``)
+ |
+ |      .. math:: Z_m = \frac{Z_{\mathrm{mass},m}-Z_{\mathrm{mass},m,\mathrm{ox}}}
+ |          {Z_{\mathrm{mass},\mathrm{fuel}}-Z_{\mathrm{mass},m,\mathrm{ox}}}
+ |
+ |      where :math:`Z_{\mathrm{mass},m}` is the elemental mass fraction of
+ |      element :math:`m` in the mixture, and :math:`Z_{\mathrm{mass},m,\mathrm{ox}}`
+ |      and :math:`Z_{\mathrm{mass},\mathrm{fuel}}` are the elemental mass fractions of
+ |      the oxidizer and fuel, or from the Bilger mixture fraction
+ |      (``element="Bilger"``), which considers the elements C, S, H and O
+ |      (R. W. Bilger, "Turbulent jet diffusion flames," Prog. Energy Combust. Sci.,
+ |      109-131 (1979)). The Bilger mixture fraction is computed by default:
+ |
+ |      .. math:: Z_m = Z_{\mathrm{Bilger}} = \frac{\beta-\beta_{\mathrm{ox}}}
+ |          {\beta_{\mathrm{fuel}}-\beta_{\mathrm{ox}}}
+ |
+ |      with
+ |
+ |      .. math:: \beta = 2\frac{Z_C}{M_C}+2\frac{Z_S}{M_S}+\frac{1}{2}\frac{Z_H}{M_H}
+ |          - \frac{Z_O}{M_O}
+ |
+ |      and :math:`M_m` the atomic weight of element :math:`m`.
+ |      For more information, see `Python example
+ |      <https://cantera.org/examples/python/thermo/equivalenceRatio.py.html>`_.::
+ |
+ |          >>> gas.set_mixture_fraction(0.5, 'CH3:0.5, CH3OH:0.5, N2:0.125', 'O2:0.21, N2:0.79, NO:0.01')
+ |          >>> gas.mixture_fraction('CH3:0.5, CH3OH:0.5, N2:0.125', 'O2:0.21, N2:0.79, NO:.01')
+ |          0.5
+ |
+ |      :param fuel:
+ |          Fuel species name or mole/mass fractions as string, array, or dict.
+ |      :param oxidizer:
+ |          Oxidizer species name or mole/mass fractions as a string, array, or
+ |          dict.
+ |      :param basis:
+ |          Determines if ``fuel`` and ``oxidizer`` are given in mole
+ |          fractions (``basis='mole'``) or mass fractions (``basis='mass'``)
+ |      :param element:
+ |          Computes the mixture fraction from the specified elemental
+ |          mass fraction (given by element name or element index) or as
+ |          the Bilger mixture fraction (default)
+ |
+ |  mmooddiiffyy__ssppeecciieess(self, k, species)
+ |      Modify the thermodynamic data associated with a species. The species name,
+ |      elemental composition, and type of thermo parameterization must be unchanged.
+ |
+ |  mmoollee__ffrraaccttiioonn__ddiicctt(self, threshold=0.0)
+ |      Return a dictionary giving the mole fraction for each species by name where the
+ |      mole fraction is greater than ``threshold``.
+ |
+ |  nn__aattoommss(self, species, element)
+ |      Number of atoms of element ``element`` in species ``species``. The element
+ |      and species may be specified by name or by index.
+ |
+ |      >>> phase.n_atoms('CH4','H')
+ |      4
+ |
+ |  rreeppoorrtt(self, show_thermo=True, threshold=1e-14)
+ |      Generate a report describing the thermodynamic state of this phase. To
+ |      print the report to the terminal, simply call the phase object. The
+ |      following two statements are equivalent::
+ |
+ |      >>> phase()
+ |      >>> print(phase.report())
+ |
+ |  sseett__ddiissccrreettiizzeedd__eelleeccttrroonn__eenneerrggyy__ddiissttrriibbuuttiioonn(self, levels, distribution)
+ |      Set electron energy distribution. When this method is used, electron
+ |      temperature is calculated from the distribution.
+ |
+ |      :param levels:
+ |          vector of electron energy levels [eV]
+ |      :param distribution:
+ |          vector of distribution
+ |
+ |  sseett__eeqquuiivvaalleennccee__rraattiioo(self, phi, fuel, oxidizer, basis='mole', *, diluent=None, fraction=None)
+ |      Set the composition to a mixture of ``fuel`` and ``oxidizer`` at the
+ |      specified equivalence ratio ``phi``, holding temperature and pressure
+ |      constant. Considers the oxidation of C to CO2, H to H2O and S to SO2.
+ |      Other elements are assumed not to participate in oxidation (that is,
+ |      N ends up as N2). The ``basis`` determines the fuel and oxidizer
+ |      compositions: ``basis='mole'`` means mole fractions (default),
+ |      ``basis='mass'`` means mass fractions. The fuel/oxidizer mixture can be
+ |      be diluted by a ``diluent`` based on a mixing ``fraction``. The amount of
+ |      diluent is quantified as a fraction of fuel, oxidizer or the fuel/oxidizer
+ |      mixture. For more information, see `Python example
+ |      <https://cantera.org/examples/python/thermo/equivalenceRatio.py.html>`_ ::
+ |
+ |          >>> gas.set_equivalence_ratio(0.5, 'CH4', 'O2:1.0, N2:3.76', basis='mole')
+ |          >>> gas.mass_fraction_dict()
+ |          {'CH4': 0.02837633052851, 'N2': 0.7452356312613, 'O2': 0.22638803821018}
+ |          >>> gas.set_equivalence_ratio(1.2, 'NH3:0.8,CO:0.2', 'O2:1', basis='mole')
+ |          >>> gas.mass_fraction_dict()
+ |          {'CO': 0.14784006249290, 'NH3': 0.35956645545401, 'O2': 0.49259348205308}
+ |
+ |      :param phi:
+ |          Equivalence ratio
+ |      :param fuel:
+ |          Fuel species name or mole/mass fractions as string, array, or dict.
+ |      :param oxidizer:
+ |          Oxidizer species name or mole/mass fractions as a string, array, or dict.
+ |      :param basis:
+ |          Determines if ``fuel`` and ``oxidizer`` are given in mole
+ |          fractions (``basis='mole'``) or mass fractions (``basis='mass'``).
+ |      :param diluent:
+ |          Optional parameter. Required if dilution is used. Specifies the composition
+ |          of the diluent in mole/mass fractions as a string, array or dict.
+ |      :param fraction:
+ |          Optional parameter. Dilutes the fuel/oxidizer mixture with the diluent
+ |          according to ``fraction``. Fraction can refer to the fraction of diluent in
+ |          the  mixture (for example ``fraction="diluent:0.7"`` will create a mixture
+ |          with 30 % fuel/oxidizer and 70 % diluent), the fraction of fuel in the
+ |          mixture (for example ``fraction="fuel:0.1"`` means that the mixture contains
+ |          10 % fuel. The amount of oxidizer is determined from the equivalence ratio
+ |          and the remaining mixture is the diluent) or fraction of oxidizer in the
+ |          mixture (for example ``fraction="oxidizer:0.1"``). The fraction itself is
+ |          interpreted as mole or mass fraction based on ``basis``. The diluent is not
+ |          considered in the computation of the equivalence ratio. Default is no
+ |          dilution or ``fraction=None``. May be given as string or dictionary (for
+ |          example ``fraction={"fuel":0.7}``).
+ |
+ |  sseett__mmiixxttuurree__ffrraaccttiioonn(self, mixture_fraction, fuel, oxidizer, basis='mole')
+ |      Set the composition to a mixture of ``fuel`` and ``oxidizer`` at the
+ |      specified mixture fraction ``mixture_fraction`` (kg fuel / kg mixture), holding
+ |      temperature and pressure constant. Considers the oxidation of C to CO2,
+ |      H to H2O and S to SO2. Other elements are assumed not to participate in
+ |      oxidation (that is, N ends up as N2). The ``basis`` determines the composition
+ |      of fuel and oxidizer: ``basis='mole'`` (default) means mole fractions,
+ |      ``basis='mass'`` means mass fractions. For more information, see `Python
+ |      example
+ |      <https://cantera.org/examples/python/thermo/equivalenceRatio.py.html>`_ ::
+ |
+ |          >>> gas.set_mixture_fraction(0.5, 'CH4', 'O2:1.0, N2:3.76')
+ |          >>> gas.mass_fraction_dict()
+ |          {'CH4': 0.5, 'N2': 0.38350014242997776, 'O2': 0.11649985757002226}
+ |          >>> gas.set_mixture_fraction(0.5, {'NH3':0.8, 'CO':0.2}, 'O2:1.0')
+ |          >>> gas.mass_fraction_dict()
+ |          {'CO': 0.145682068778996, 'NH3': 0.354317931221004, 'O2': 0.5}
+ |
+ |      :param mixture_fraction:
+ |          Mixture fraction (kg fuel / kg mixture)
+ |      :param fuel:
+ |          Fuel species name or mole/mass fractions as string, array, or dict.
+ |      :param oxidizer:
+ |          Oxidizer species name or mole/mass fractions as a string, array, or
+ |          dict.
+ |      :param basis: determines if ``fuel`` and ``oxidizer`` are given in mole
+ |          fractions (``basis='mole'``) or mass fractions (``basis='mass'``)
+ |
+ |  sseett__uunnnnoorrmmaalliizzeedd__mmaassss__ffrraaccttiioonnss(self, Y)
+ |      Set the mass fractions without normalizing to force ``sum(Y) == 1.0``.
+ |      Useful primarily when calculating derivatives with respect to ``Y[k]`` by
+ |      finite difference.
+ |
+ |  sseett__uunnnnoorrmmaalliizzeedd__mmoollee__ffrraaccttiioonnss(self, X)
+ |      Set the mole fractions without normalizing to force ``sum(X) == 1.0``.
+ |      Useful primarily when calculating derivatives with respect to ``X[k]``
+ |      by finite difference.
+ |
+ |  ssppeecciieess(self, k=None)
+ |      Return the `Species` object for species ``k``, where ``k`` is either the
+ |      species index or the species name. If ``k`` is not specified, a list of
+ |      all species objects is returned. Changes to this object do not affect
+ |      the `ThermoPhase` or `Solution` object until the `modify_species`
+ |      function is called.
+ |
+ |  ssppeecciieess__iinnddeexx(self, species)
+ |      The index of species ``species``, which may be specified as a string or
+ |      an integer. In the latter case, the index is checked for validity and
+ |      returned. If no such species is present, an exception is thrown.
+ |
+ |  ssppeecciieess__nnaammee(self, k)
+ |      Name of the species with index ``k``.
+ |
+ |  ssttooiicchh__aaiirr__ffuueell__rraattiioo(self, fuel, oxidizer, basis='mole')
+ |      Get the stoichiometric air to fuel ratio (kg oxidizer / kg fuel). Considers the
+ |      oxidation of C to CO2, H to H2O and S to SO2. Other elements are assumed
+ |      not to participate in oxidation (that is, N ends up as N2).
+ |      The ``basis`` determines the composition of fuel and oxidizer: ``basis='mole'`` (default)
+ |      means mole fractions, ``basis='mass'`` means mass fractions::
+ |
+ |          >>> gas.set_mixture_fraction(0.5, 'CH3:0.5, CH3OH:.5, N2:0.125', 'O2:0.21, N2:0.79, NO:0.01')
+ |          >>> gas.stoich_air_fuel_ratio('CH3:0.5, CH3OH:.5, N2:0.125', 'O2:0.21, N2:0.79, NO:0.01')
+ |          8.148040722239438
+ |
+ |      :param fuel:
+ |          Fuel species name or mole/mass fractions as string, array, or dict.
+ |      :param oxidizer:
+ |          Oxidizer species name or mole/mass fractions as a string, array, or
+ |          dict.
+ |      :param basis:
+ |          Determines if ``fuel`` and ``oxidizer`` are given in mole
+ |          fractions (``basis='mole'``) or mass fractions (``basis='mass'``)
+ |
+ |  ----------------------------------------------------------------------
+ |  Data descriptors inherited from cantera.thermo.ThermoPhase:
+ |
+ |  DDPP
+ |      Get/Set density [kg/m^3] and pressure [Pa].
+ |
+ |  DDPPXX
+ |      Get/Set density [kg/m^3], pressure [Pa], and mole fractions.
+ |
+ |  DDPPYY
+ |      Get/Set density [kg/m^3], pressure [Pa], and mass fractions.
+ |
+ |  HHPP
+ |      Get/Set enthalpy [J/kg or J/kmol] and pressure [Pa].
+ |
+ |  HHPPXX
+ |      Get/Set enthalpy [J/kg or J/kmol], pressure [Pa] and mole fractions.
+ |
+ |  HHPPYY
+ |      Get/Set enthalpy [J/kg or J/kmol], pressure [Pa] and mass fractions.
+ |
+ |  PP
+ |      Pressure [Pa].
+ |
+ |  PP__ssaatt
+ |      Saturation pressure [Pa] at the current temperature.
+ |
+ |  PPee
+ |      Get electron Pressure [Pa].
+ |
+ |  SSPP
+ |      Get/Set entropy [J/kg/K or J/kmol/K] and pressure [Pa].
+ |
+ |  SSPPXX
+ |      Get/Set entropy [J/kg/K or J/kmol/K], pressure [Pa], and mole fractions.
+ |
+ |  SSPPYY
+ |      Get/Set entropy [J/kg/K or J/kmol/K], pressure [Pa], and mass fractions.
+ |
+ |  SSVV
+ |      Get/Set entropy [J/kg/K or J/kmol/K] and specific volume [m^3/kg or
+ |      m^3/kmol].
+ |
+ |  SSVVXX
+ |      Get/Set entropy [J/kg/K or J/kmol/K], specific volume [m^3/kg or
+ |      m^3/kmol], and mole fractions.
+ |
+ |  SSVVYY
+ |      Get/Set entropy [J/kg/K or J/kmol/K], specific volume [m^3/kg or
+ |      m^3/kmol], and mass fractions.
+ |
+ |  TT
+ |      Temperature [K].
+ |
+ |  TTDD
+ |      Get/Set temperature [K] and density [kg/m^3 or kmol/m^3].
+ |
+ |  TTDDXX
+ |      Get/Set temperature [K], density [kg/m^3 or kmol/m^3], and mole
+ |      fractions.
+ |
+ |  TTDDYY
+ |      Get/Set temperature [K] and density [kg/m^3 or kmol/m^3], and mass
+ |      fractions.
+ |
+ |  TTPP
+ |      Get/Set temperature [K] and pressure [Pa].
+ |
+ |  TTPPXX
+ |      Get/Set temperature [K], pressure [Pa], and mole fractions.
+ |
+ |  TTPPYY
+ |      Get/Set temperature [K], pressure [Pa], and mass fractions.
+ |
+ |  TT__ssaatt
+ |      Saturation temperature [K] at the current pressure.
+ |
+ |  TTee
+ |      Get/Set electron Temperature [K].
+ |
+ |  UUVV
+ |      Get/Set internal energy [J/kg or J/kmol] and specific volume
+ |      [m^3/kg or m^3/kmol].
+ |
+ |  UUVVXX
+ |      Get/Set internal energy [J/kg or J/kmol], specific volume
+ |      [m^3/kg or m^3/kmol], and mole fractions.
+ |
+ |  UUVVYY
+ |      Get/Set internal energy [J/kg or J/kmol], specific volume
+ |      [m^3/kg or m^3/kmol], and mass fractions.
+ |
+ |  XX
+ |      Get/Set the species mole fractions. Can be set as an array, as a dictionary,
+ |      or as a string. Always returns an array::
+ |
+ |          >>> phase.X = [0.1, 0, 0, 0.4, 0, 0, 0, 0, 0.5]
+ |          >>> phase.X = {'H2':0.1, 'O2':0.4, 'AR':0.5}
+ |          >>> phase.X = 'H2:0.1, O2:0.4, AR:0.5'
+ |          >>> phase.X
+ |          array([0.1, 0, 0, 0.4, 0, 0, 0, 0, 0.5])
+ |
+ |  YY
+ |      Get/Set the species mass fractions. Can be set as an array, as a dictionary,
+ |      or as a string. Always returns an array::
+ |
+ |          >>> phase.Y = [0.1, 0, 0, 0.4, 0, 0, 0, 0, 0.5]
+ |          >>> phase.Y = {'H2':0.1, 'O2':0.4, 'AR':0.5}
+ |          >>> phase.Y = 'H2:0.1, O2:0.4, AR:0.5'
+ |          >>> phase.Y
+ |          array([0.1, 0, 0, 0.4, 0, 0, 0, 0, 0.5])
+ |
+ |  aaccttiivviittiieess
+ |      Array of nondimensional activities. Returns either molar or molal
+ |      activities depending on the convention of the thermodynamic model.
+ |
+ |  aaccttiivviittyy__ccooeeffffiicciieennttss
+ |      Array of nondimensional, molar activity coefficients.
+ |
+ |  aattoommiicc__wweeiigghhttss
+ |      Array of atomic weight [kg/kmol] for each element in the mixture.
+ |
+ |  bbaassiiss
+ |      Determines whether intensive thermodynamic properties are treated on a
+ |      ``mass`` (per kg) or ``molar`` (per kmol) basis. This affects the values
+ |      returned by the properties `h`, `u`, `s`, `g`, `v`, `density`, `cv`,
+ |      and `cp`, as well as the values used with the state-setting properties
+ |      such as `HPX` and `UV`.
+ |
+ |  ccaassee__sseennssiittiivvee__ssppeecciieess__nnaammeess
+ |      Enforce case-sensitivity for look up of species names
+ |
+ |  cchhaarrggeess
+ |      Array of species charges [elem. charge].
+ |
+ |  cchheemmiiccaall__ppootteennttiiaallss
+ |      Array of species chemical potentials [J/kmol].
+ |
+ |  ccoonncceennttrraattiioonnss
+ |      Get/Set the species concentrations. Units are kmol/m^3 for bulk phases, kmol/m^2
+ |      for surface phases, and kmol/m for edge phases.
+ |
+ |  ccpp
+ |      Heat capacity at constant pressure [J/kg/K or J/kmol/K] depending
+ |      on `basis`.
+ |
+ |  ccpp__mmaassss
+ |      Specific heat capacity at constant pressure [J/kg/K].
+ |
+ |  ccpp__mmoollee
+ |      Molar heat capacity at constant pressure [J/kmol/K].
+ |
+ |  ccrriittiiccaall__ddeennssiittyy
+ |      Critical density [kg/m^3 or kmol/m^3] depending on `basis`.
+ |
+ |  ccrriittiiccaall__pprreessssuurree
+ |      Critical pressure [Pa].
+ |
+ |  ccrriittiiccaall__tteemmppeerraattuurree
+ |      Critical temperature [K].
+ |
+ |  ccvv
+ |      Heat capacity at constant volume [J/kg/K or J/kmol/K] depending on
+ |      `basis`.
+ |
+ |  ccvv__mmaassss
+ |      Specific heat capacity at constant volume [J/kg/K].
+ |
+ |  ccvv__mmoollee
+ |      Molar heat capacity at constant volume [J/kmol/K].
+ |
+ |  ddeennssiittyy
+ |      Density [kg/m^3 or kmol/m^3] depending on `basis`.
+ |
+ |  ddeennssiittyy__mmaassss
+ |      (Mass) density [kg/m^3].
+ |
+ |  ddeennssiittyy__mmoollee
+ |      Molar density [kmol/m^3].
+ |
+ |  eelleeccttrriicc__ppootteennttiiaall
+ |      Get/Set the electric potential [V] for this phase.
+ |
+ |  eelleeccttrroocchheemmiiccaall__ppootteennttiiaallss
+ |      Array of species electrochemical potentials [J/kmol].
+ |
+ |  eelleeccttrroonn__eenneerrggyy__ddiissttrriibbuuttiioonn
+ |      Electron energy distribution
+ |
+ |  eelleeccttrroonn__eenneerrggyy__ddiissttrriibbuuttiioonn__ttyyppee
+ |      Electron energy distribution type
+ |
+ |  eelleeccttrroonn__eenneerrggyy__lleevveellss
+ |      Electron energy levels [eV]
+ |
+ |  eelleemmeenntt__nnaammeess
+ |      A list of all the element names.
+ |
+ |  eenntthhaallppyy__mmaassss
+ |      Specific enthalpy [J/kg].
+ |
+ |  eenntthhaallppyy__mmoollee
+ |      Molar enthalpy [J/kmol].
+ |
+ |  eennttrrooppyy__mmaassss
+ |      Specific entropy [J/kg/K].
+ |
+ |  eennttrrooppyy__mmoollee
+ |      Molar entropy [J/kmol/K].
+ |
+ |  gg
+ |      Gibbs free energy [J/kg or J/kmol] depending on `basis`.
+ |
+ |  ggiibbbbss__mmaassss
+ |      Specific Gibbs free energy [J/kg].
+ |
+ |  ggiibbbbss__mmoollee
+ |      Molar Gibbs free energy [J/kmol].
+ |
+ |  hh
+ |      Enthalpy [J/kg or J/kmol] depending on `basis`.
+ |
+ |  hhaass__pphhaassee__ttrraannssiittiioonn
+ |      Returns true if the phase represents a substance with phase transitions
+ |
+ |  iinntt__eenneerrggyy__mmaassss
+ |      Specific internal energy [J/kg].
+ |
+ |  iinntt__eenneerrggyy__mmoollee
+ |      Molar internal energy [J/kmol].
+ |
+ |  iiss__ccoommpprreessssiibbllee
+ |      Returns true if the density of the phase is an independent variable defining
+ |      the thermodynamic state of a substance
+ |
+ |  iiss__ppuurree
+ |      Returns true if the phase represents a pure (fixed composition) substance
+ |
+ |  iissootthheerrmmaall__ccoommpprreessssiibbiilliittyy
+ |      Isothermal compressibility [1/Pa].
+ |
+ |  iissoottrrooppiicc__sshhaappee__ffaaccttoorr
+ |      Shape factor of isotropic-velocity distribution for electron energy
+ |
+ |  mmaaxx__tteemmpp
+ |      Maximum temperature for which the thermodynamic data for the phase are
+ |      valid.
+ |
+ |  mmeeaann__eelleeccttrroonn__eenneerrggyy
+ |      Mean electron energy [eV]
+ |
+ |  mmeeaann__mmoolleeccuullaarr__wweeiigghhtt
+ |      The mean molecular weight (molar mass) [kg/kmol].
+ |
+ |  mmiinn__tteemmpp
+ |      Minimum temperature for which the thermodynamic data for the phase are
+ |      valid.
+ |
+ |  mmoolleeccuullaarr__wweeiigghhttss
+ |      Array of species molecular weights (molar masses) [kg/kmol].
+ |
+ |  nn__eelleeccttrroonn__eenneerrggyy__lleevveellss
+ |      Number of electron energy levels
+ |
+ |  nn__eelleemmeennttss
+ |      Number of elements.
+ |
+ |  nn__sseelleecctteedd__ssppeecciieess
+ |      Number of species selected for output (by slicing of Solution object)
+ |
+ |  nn__ssppeecciieess
+ |      Number of species.
+ |
+ |  nnoorrmmaalliizzee__eelleeccttrroonn__eenneerrggyy__ddiissttrriibbuuttiioonn__eennaabblleedd
+ |      Automatically normalize electron energy distribution
+ |
+ |  ppaarrttiiaall__mmoollaarr__ccpp
+ |      Array of species partial molar specific heat capacities at constant
+ |      pressure [J/kmol/K].
+ |
+ |  ppaarrttiiaall__mmoollaarr__eenntthhaallppiieess
+ |      Array of species partial molar enthalpies [J/kmol].
+ |
+ |  ppaarrttiiaall__mmoollaarr__eennttrrooppiieess
+ |      Array of species partial molar entropies [J/kmol/K].
+ |
+ |  ppaarrttiiaall__mmoollaarr__iinntt__eenneerrggiieess
+ |      Array of species partial molar internal energies [J/kmol].
+ |
+ |  ppaarrttiiaall__mmoollaarr__vvoolluummeess
+ |      Array of species partial molar volumes [m^3/kmol].
+ |
+ |  pphhaassee__ooff__mmaatttteerr
+ |      Get the thermodynamic phase (gas, liquid, etc.) at the current conditions.
+ |
+ |  qquuaaddrraattuurree__mmeetthhoodd
+ |      Quadrature method
+ |
+ |  rreeffeerreennccee__pprreessssuurree
+ |      Reference state pressure [Pa].
+ |
+ |  ss
+ |      Entropy [J/kg/K or J/kmol/K] depending on `basis`.
+ |
+ |  ssoouunndd__ssppeeeedd
+ |      Speed of sound [m/s].
+ |
+ |  ssppeecciieess__nnaammeess
+ |      A list of all the species names.
+ |
+ |  ssttaannddaarrdd__ccoonncceennttrraattiioonn__uunniittss
+ |      Get standard concentration units for this phase.
+ |
+ |  ssttaannddaarrdd__ccpp__RR
+ |      Array of nondimensional species standard-state specific heat capacities
+ |      at constant pressure at the current temperature and pressure.
+ |
+ |  ssttaannddaarrdd__eenntthhaallppiieess__RRTT
+ |      Array of nondimensional species standard-state enthalpies at the
+ |      current temperature and pressure.
+ |
+ |  ssttaannddaarrdd__eennttrrooppiieess__RR
+ |      Array of nondimensional species standard-state entropies at the
+ |      current temperature and pressure.
+ |
+ |  ssttaannddaarrdd__ggiibbbbss__RRTT
+ |      Array of nondimensional species standard-state Gibbs free energies at
+ |      the current temperature and pressure.
+ |
+ |  ssttaannddaarrdd__iinntt__eenneerrggiieess__RRTT
+ |      Array of nondimensional species standard-state internal energies at the
+ |      current temperature and pressure.
+ |
+ |  ssttaattee
+ |      Get/Set the full thermodynamic state as a single array, arranged as
+ |      [temperature, density, mass fractions] for most phases. Useful mainly
+ |      in cases where it is desired to store many states in a multidimensional
+ |      array.
+ |
+ |  ssttaattee__ssiizzee
+ |      Return size of vector defining internal state of the phase.
+ |
+ |  tthheerrmmaall__eexxppaannssiioonn__ccooeeffff
+ |      Thermal expansion coefficient [1/K].
+ |
+ |  tthheerrmmoo__mmooddeell
+ |      Return thermodynamic model describing phase.
+ |
+ |  uu
+ |      Internal energy in [J/kg or J/kmol].
+ |
+ |  vv
+ |      Specific volume [m^3/kg or m^3/kmol] depending on `basis`.
+ |
+ |  vvoolluummee__mmaassss
+ |      Specific volume [m^3/kg].
+ |
+ |  vvoolluummee__mmoollee
+ |      Molar volume [m^3/kmol].
+ |
+ |  ----------------------------------------------------------------------
+ |  Data and other attributes inherited from cantera.thermo.ThermoPhase:
+ |
+ |  ____ppyyxx__vvttaabbllee____ = <capsule object NULL>
+ |
+ |  ----------------------------------------------------------------------
+ |  Methods inherited from cantera.solutionbase._SolutionBase:
+ |
+ |  ____ccooppyy____(self)
+ |
+ |  ____ddeell____(...)
+ |
+ |  ____ggeettiitteemm____(self, key, /)
+ |      Return self[key].
+ |
+ |  ____ggeettssttaattee____(self)
+ |      Save complete information of the current phase for pickling.
+ |
+ |  ____sseettssttaattee____(self, pkl)
+ |      Restore Solution from pickled information.
+ |
+ |  cclleeaarr__uusseerr__ddaattaa(self)
+ |      Clear all saved input data, so that the data given by `input_data` or
+ |      `write_yaml` will only include values generated by Cantera based on the
+ |      current object state.
+ |
+ |  cclleeaarr__uusseerr__hheeaaddeerr(self)
+ |      Clear all saved header data, so that the data given by `input_header` or
+ |      `write_yaml` will only include values generated by Cantera based on the
+ |      current object state.
+ |
+ |  uuppddaattee__uusseerr__ddaattaa(self, data)
+ |      Add the contents of the provided `dict` as additional fields when generating
+ |      YAML phase definition files with `write_yaml` or in the data returned by
+ |      `input_data`. Existing keys with matching names are overwritten.
+ |
+ |  uuppddaattee__uusseerr__hheeaaddeerr(self, data)
+ |      Add the contents of the provided `dict` as additional top-level YAML fields
+ |      when generating files with `write_yaml` or in the data returned by
+ |      `input_header`. Existing keys with matching names are overwritten.
+ |
+ |  wwrriittee__cchheemmkkiinn(self, mechanism_path=None, thermo_path=None, transport_path=None, sort_species=False, sort_elements=False, overwrite=False)
+ |      Write this `~cantera.Solution` instance to one or more Chemkin-format files.
+ |      See the documentation for `cantera.yaml2ck.convert` for information about the
+ |      arguments to this function.
+ |
+ |  wwrriittee__yyaammll(self, filename=None, phases=None, units=None, precision=None, skip_user_defined=None, header=True)
+ |      Write the definition for this phase, any additional phases specified,
+ |      and their species and reactions to the specified file.
+ |
+ |      :param filename:
+ |          The name of the output file; if ``None``, a YAML string is returned
+ |      :param phases:
+ |          Additional ThermoPhase / Solution objects to be included in the
+ |          output file
+ |      :param units:
+ |          A `UnitSystem` object or dictionary of the units to be used for
+ |          each dimension.
+ |          See `YamlWriter.output_units <cantera.YamlWriter.output_units>`.
+ |      :param precision:
+ |          For output floating point values, the maximum number of digits to
+ |          the right of the decimal point. The default is 15 digits.
+ |      :param skip_user_defined:
+ |          If `True`, user-defined fields which are not used by Cantera will
+ |          be stripped from the output. These additional contents can also be
+ |          controlled using the `update_user_data` and `clear_user_data` functions.
+ |      :param header:
+ |          If `True`, fields of the `input_header` will be added to the YAML header;
+ |          note that fields name ``generator``, ``cantera-version``, ``git-commit``
+ |          and ``date`` are reserved, which means that any existing data are
+ |          replaced by automatically generated content when the file is written.
+ |
+ |  ----------------------------------------------------------------------
+ |  Data descriptors inherited from cantera.solutionbase._SolutionBase:
+ |
+ |  ccoommppoossiittee
+ |      Returns tuple of thermo/kinetics/transport models associated with
+ |      this SolutionBase object.
+ |
+ |  iinnppuutt__ddaattaa
+ |      Get input data corresponding to the current state of this Solution,
+ |      along with any user-specified data provided with its input (YAML)
+ |      definition.
+ |
+ |  iinnppuutt__hheeaaddeerr
+ |      Retrieve input header data not associated with the current state of this
+ |      Solution, which corresponds to fields at the root level of the YAML input
+ |      that are not required for the instantiation of Cantera objects.
+ |
+ |  nnaammee
+ |      The name assigned to this object. The default value corresponds
+ |      to the YAML input file phase entry.
+ |
+ |  sseelleecctteedd__ssppeecciieess
+ |      Get/set the set of species that are included when returning results that have
+ |      a value for each species, such as `species_names <cantera.ThermoPhase.species_names>`,
+ |      `partial_molar_enthalpies <cantera.ThermoPhase.partial_molar_enthalpies>`, or
+ |      `net_production_rates <cantera.Kinetics.net_production_rates>`. The list of
+ |      selected species can be set by name or index. This property returns the
+ |      species by index.::
+ |
+ |         >>> gas.selected_species = ["H2", "O2"]
+ |         >>> print(gas.molecular_weights)
+ |         [ 2.016 31.998]
+ |
+ |      This method is often used implicitly by using an indexing expression on a
+ |      `Solution` object::
+ |
+ |         >>> print(gas["H2", "O2"].molecular_weights)
+ |         [ 2.016 31.998]
+ |
+ |  ssoouurrccee
+ |      The source of this object (such as a file name).
