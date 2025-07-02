@@ -2,8 +2,8 @@ import pandas as pd
 import numpy as np
 
 # needed to save the figures without displaying them
-import matplotlib
-matplotlib.use('Agg')  # Use Agg backend for non-interactive plotting
+#import matplotlib
+#matplotlib.use('Agg')  # Use Agg backend for non-interactive plotting
 
 import matplotlib.pyplot as plt
 import cantera as ct
@@ -60,10 +60,11 @@ labels_temp = ["358 k", "393 k", "428 k"]
 data_to_plot(exp_const_P, markers, colors, axs[0], labels_temp)
 for i in range(len(Tin_var)):
     plots = axs[0].plot(phi, fin_Temp_Result.iloc[i, 1:], linestyle='-', color=colors[i], label= labels_temp[i] + ' (Cantera)')
-axs[0].set_title('Flame Speed at Constant Pressure (1 atm)')
-axs[0].set_xlabel('Equivalence Ratio ϕ')
-axs[0].set_ylabel('Laminar Flame Speed [cm/s]')
-axs[0].legend()
+axs[0].set_title('Flame Speed at Constant Pressure (1 atm)', fontsize=18)
+axs[0].set_xlabel('Equivalence Ratio ϕ', fontsize=16)
+axs[0].set_ylabel('Laminar Flame Speed [cm/s]', fontsize=16)
+axs[0].legend(fontsize=14)
+axs[0].tick_params(axis='both', labelsize=14)
 axs[0].grid(True)
 
 # Plot second dataset (bottom subplot)
@@ -71,14 +72,15 @@ labels_presure = ["1 atm", "2 atm", "5 atm", "20 atm"]
 data_to_plot(exp_const_temp, markers, colors, axs[1], labels_presure)
 for i in range(len(pressure)):
     plots = axs[1].plot(phi, fin_P_Result.iloc[i, 1:], linestyle='-', color=colors[i], label= labels_presure[i] + ' (Cantera)')
-axs[1].set_title('Flame Speed at Constant Temperature (298 K)')
-axs[1].set_xlabel('Equivalence Ratio ϕ')
-axs[1].set_ylabel('Laminar Flame Speed [cm/s]')
-axs[1].legend()
+axs[1].set_title('Flame Speed at Constant Temperature (298 K)', fontsize=18)
+axs[1].set_xlabel('Equivalence Ratio ϕ', fontsize=16)
+axs[1].set_ylabel('Laminar Flame Speed [cm/s]', fontsize=16)
+axs[1].legend(fontsize=14)
+axs[1].tick_params(axis='both', labelsize=14)
 axs[1].grid(True)
 
 plt.tight_layout()
 plt.show()
 
 # Save the figure, won't display it, need to activate Agg backend under imports
-plt.savefig('/home/brukare/Combustion/Excercise 7 - laminar flame speed/FlameSpeed_Results_Both.png', dpi=300)
+#plt.savefig('/home/brukare/Combustion/Excercise 7 - laminar flame speed/FlameSpeed_Results_Both.png', dpi=300)

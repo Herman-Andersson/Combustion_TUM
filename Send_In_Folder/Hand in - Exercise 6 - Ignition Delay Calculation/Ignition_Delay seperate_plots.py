@@ -103,7 +103,7 @@ def data_to_plot(exp_data, markers, colors, ax, labels):
         marker = markers[idx % len(markers)]
         color = colors[idx % len(colors)]
         label = labels[idx % len(labels)] + " (Exp)" 
-        ax.scatter(x, y, marker=marker, color=color, label=label, s=50)  # BONUS: Use scatter instead of plot for exp data
+        ax.scatter(x, y, marker=marker, color=color, label=label, s=50) 
 
 # Add secondary x-axis on the top for Temperature (K)
 def T_to_invT(T):  # Converts T in K to 1000/T
@@ -130,9 +130,9 @@ for plot_idx in range(3):
     # Set labels, title, and formatting with increased font sizes
     ax.set_xlabel(r'$\frac{1000}{T}$ [1/K]', fontsize=16)
     ax.set_ylabel('Ignition Delay [μs]', fontsize=16)
-    ax.set_title(f'Ignition Delay Time for φ = {phi[plot_idx]}', fontsize=18, pad=20)  # Added padding
-    ax.set_xlim(0.5, 0.75)  # Set x-axis limits
-    ax.set_ylim(top=1e4)  # Set y-axis maximum to 10^4
+    ax.set_title(f'Ignition Delay Time for φ = {phi[plot_idx]}', fontsize=18, pad=20)  
+    ax.set_xlim(0.5, 0.75)  
+    ax.set_ylim(top=1e4) 
     ax.legend(fontsize=12) 
     ax.grid(True)
     ax.tick_params(axis='both', which='major', labelsize=14)
@@ -148,4 +148,4 @@ for plot_idx in range(3):
     # Save individual figure
     filename = f"IDT_Phi_{phi[plot_idx]}_to_07.png"
     plt.savefig(os.path.join(script_dir, filename), bbox_inches='tight', dpi=300)
-    plt.close()  # Close figure to free memory
+    plt.close()  

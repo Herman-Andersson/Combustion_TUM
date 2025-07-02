@@ -103,7 +103,7 @@ def data_to_plot(exp_data, markers, colors, ax, labels):
         marker = markers[idx % len(markers)]
         color = colors[idx % len(colors)]
         label = labels[idx % len(labels)] + " (Exp)" 
-        ax.scatter(x, y, marker=marker, color=color, label=label, s=50)  # BONUS: Use scatter instead of plot for exp data
+        ax.scatter(x, y, marker=marker, color=color, label=label, s=50) 
 
 # Add secondary x-axis on the top for Temperature (K)
 def T_to_invT(T):  # Converts T in K to 1000/T
