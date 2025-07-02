@@ -183,3 +183,42 @@ print("-" * 10 + "\ncalculation completed\n" + "-" * 10)
 #     print("\nThe volumes at maximum NO (ppm) are the same (within tolerance).")
 # else:
 #     print("\nThe volumes at maximum NO (ppm) are different.")
+
+# Table 3: Temperatures at φ = 0.75 and 1.25 (NO formation range)
+print("\n" + "="*70)
+print("Table 3: Temperatures at φ = 0.75 and 1.25 (NO Formation Range)")
+print("="*70)
+
+# Find indices closest to φ = 0.75 and 1.25
+idx_08 = np.argmin(np.abs(Phi - 0.8))
+idx_125 = np.argmin(np.abs(Phi - 1.3))
+
+# Get actual phi values (closest to target)
+phi_075_actual = Phi[idx_08]
+phi_125_actual = Phi[idx_125]
+
+# Extract temperatures at these phi values
+temp_python_075 = AFT[idx_08]
+temp_cantera_075 = T_store_AIR[idx_08]
+temp_python_125 = AFT[idx_125]
+temp_cantera_125 = T_store_AIR[idx_125]
+
+# Extract NO concentrations at these phi values
+NO_python_075 = NO_ppm_manual[idx_08]
+NO_cantera_075 = NO_ppm_cantera[idx_08]
+NO_python_125 = NO_ppm_manual[idx_125]
+NO_cantera_125 = NO_ppm_cantera[idx_125]
+
+# Print formatted table
+print(f"{'Parameter':<35} {'φ = {:.3f}':<15} {'φ = {:.3f}':<15}".format(phi_075_actual, phi_125_actual))
+print("-"*70)
+print(f"{'Python Temperature (K)':<35} {temp_python_075:<15.2f} {temp_python_125:<15.2f}")
+print(f"{'Cantera Temperature (K)':<35} {temp_cantera_075:<15.2f} {temp_cantera_125:<15.2f}")
+print(f"{'Python NO (ppm)':<35} {NO_python_075:<15.2f} {NO_python_125:<15.2f}")
+print(f"{'Cantera NO (ppm)':<35} {NO_cantera_075:<15.2f} {NO_cantera_125:<15.2f}")
+print("="*70)
+
+# Print temperature range information for the text
+print(f"\nTemperature range for NO formation (φ = 0.75 to 1.25):")
+print(f"Python calculations: {temp_python_075:.0f}K to {temp_python_125:.0f}K")
+print(f"Cantera calculations: {temp_cantera_075:.0f}K to {temp_cantera_125:.0f}K")
