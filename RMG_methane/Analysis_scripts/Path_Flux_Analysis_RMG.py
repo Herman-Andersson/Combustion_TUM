@@ -2,12 +2,11 @@ import os
 import cantera as ct
 
 # Define a gas mixture at a high temperature that will undergo a reaction:
-gas = ct.Solution('gri30.yaml')
+# gas = ct.Solution('gri30.yaml') # For GRI mechanism
+gas = ct.Solution("../mechanisms_archive/rmg_99conv_1h25min_20250707/methane_99conv_1h25min.yaml")
 # Set equivalence ratio to 1 for stoichiometric methane-air combustion
-gas.set_equivalence_ratio(1.0, 'CH4', 'O2:2.0, N2:7.52')
-
-
-gas.TP = 1500, 1e5  # 1500 K, 1 bar (100000 Pa)
+gas.set_equivalence_ratio(1.1, 'CH4(1)', 'O2(2):2.0, N2:7.52')
+gas.TP = 1200, 1e5  # 1500 K, 1 bar (100000 Pa)
 
 # Define the element to follow in the reaction path diagram:
 element = 'C'
@@ -32,8 +31,9 @@ diagram.title = 'Reaction path diagram following {0}'.format(element)
 
 
 # Define the filenames:
-dot_file = 'ReactionPathDiagram.dot'
-img_file = 'ReactionPathDiagram.png'
+output_dir = '/home/brukare/Combustion/RMG_methane/Analysis_scripts/' 
+dot_file = os.path.join(output_dir, 'ReactionPathDiagram.dot')
+img_file = os.path.join(output_dir, 'ReactionPathDiagram.png')
 
 # Write the dot-file first, then create the image from the dot-file with customizable
 # parameters:
@@ -44,7 +44,6 @@ diagram.write_dot(dot_file)
 # The command -Gdpi sets the resolution of the generated image in dpi.
 # os.system('dot {0} -Tpng -o{1} -Gdpi=300'.format(dot_file, img_file))
 os.system('dot {0} -Earrowhead="onormal" -Esamehead="true" -Nstyle="filled" -Nfillcolor="lightgreen" -Nshape="box3d" -Tpng -Gdpi=300 -Gbgcolor="#FFFFFF" -Gnodesep=0.1 -o{1}'.format(dot_file, img_file))
-
 
 print(f"Reaction path diagram saved as: {img_file}")
 print("Done!")
