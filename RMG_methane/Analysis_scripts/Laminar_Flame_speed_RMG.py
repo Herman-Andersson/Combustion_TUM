@@ -8,7 +8,14 @@ matplotlib.use('Agg')  # Use Agg backend for non-interactive plotting
 
 import matplotlib.pyplot as plt
 import cantera as ct
-
+# -------------------- Experimental Data import Section --------------------------------
+# Import experimental flame speed data
+script_dir = os.path.dirname(__file__)
+os.chdir('/home/brukare/Combustion/RMG_methane')
+exp_const_P = pd.read_csv(os.path.join(script_dir, 'FlameSpeedsExperimental_constant temperature_298K.csv'))
+# Only take coloumns with relevant data
+exp_phi = exp_const_P.iloc[:, 0] 
+exp_LFS = exp_const_P.iloc[:, 1]    
 # -------------------- Cantera Calculation Section --------------------------------
 # Simulation Parameters
 pressure = 1e5  # pressure of 1 bar in Pa
@@ -67,10 +74,11 @@ calculate_flame_speed(phi, gas_rmg_slow, loglevel, Tin_const, pressure, False, L
 # Create comparison plot
 fig, ax = plt.subplots(1, 1, figsize=(10, 6))
 
+ax.scatter(exp_phi, exp_LFS, marker='o', color='black', label='Experimental Data, 1atm', s=50)
 # Plot all three mechanisms
-ax.plot(phi, LFS_gri, marker='o', linestyle='-', color='tab:blue', label='GRI-Mech 3.0')
-ax.plot(phi, LFS_rmg_fast, marker='s', linestyle='-', color='tab:orange', label='RMG 95% conv (26 min)')
-ax.plot(phi, LFS_rmg_slow, marker='^', linestyle='-', color='tab:green', label='RMG 99% conv (1h25min)')
+ax.plot(phi, LFS_gri, linestyle='-', color='tab:blue', label='GRI-Mech 3.0')
+ax.plot(phi, LFS_rmg_fast, linestyle='-', color='tab:orange', label='RMG 95% conv (26 min)')
+ax.plot(phi, LFS_rmg_slow, linestyle='-', color='tab:green', label='RMG 99% conv (1h25min)')
 
 ax.set_title('Laminar Flame Speed Comparison at 298 K and 1 bar', fontsize=18)
 ax.set_xlabel('Equivalence Ratio ϕ', fontsize=16)

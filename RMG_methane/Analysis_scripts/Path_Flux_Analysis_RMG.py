@@ -2,10 +2,11 @@ import os
 import cantera as ct
 
 # Define a gas mixture at a high temperature that will undergo a reaction:
-# gas = ct.Solution('gri30.yaml') # For GRI mechanism
-gas = ct.Solution("../mechanisms_archive/rmg_99conv_1h25min_20250707/methane_99conv_1h25min.yaml")
-# Set equivalence ratio to 1 for stoichiometric methane-air combustion
-gas.set_equivalence_ratio(1.1, 'CH4(1)', 'O2(2):2.0, N2:7.52')
+# Set equivalence ratio to 1.1 for stoichiometric methane-air combustion
+gas = ct.Solution('gri30.yaml') # For GRI mechanism
+gas.set_equivalence_ratio(1.1, 'CH4', 'O2:2.0, N2:7.52')
+## gas = ct.Solution("../mechanisms_archive/rmg_99conv_1h25min_20250707/methane_99conv_1h25min.yaml")
+#gas.set_equivalence_ratio(1.1, 'CH4(1)', 'O2(2):2.0, N2:7.52')
 gas.TP = 1200, 1e5  # 1500 K, 1 bar (100000 Pa)
 
 # Define the element to follow in the reaction path diagram:

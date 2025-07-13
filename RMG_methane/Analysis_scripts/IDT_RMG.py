@@ -10,13 +10,21 @@ import os
 import matplotlib.pyplot as plt
 import cantera as ct
 
+# -------------------- Experimental Data import Section --------------------------------
+# Import experimental flame speed data
+script_dir = os.path.dirname(__file__)
+os.chdir('/home/brukare/Combustion/RMG_methane')
+IDT_1 = pd.read_csv(os.path.join(script_dir, 'IDT_1.0.csv'))
+
 # -------------------- Cantera Calculation Section --------------------------------
 # Simulation Parameters
 phi = 1.1  # equivalence ratio
-T = np.linspace(700, 1400, 10)  # temperature in K (assignment conditions)
+T_gri = np.linspace(700, 2000, 10)  # temperature in K (assignment conditions)
+T_rmg = np.linspace(700, 1400, 10)  # temperature in K (assignment conditions)
 P_pa = 1e5  # pressure in pa (1 bar)
-xaxis = 1000/T  # x-axis for the plot, 1000/T in K^-1
-estimated_IDT = 1e3  # [s] Estimated ignition delay time in seconds (to make sure we don't hit a platueau in the simulation in thw while loop)
+xaxis_gri = 1000/T_gri  # x-axis for the plot, 1000/T in K^-1
+xaxis_rmg = 1000/T_rmg  # x-axis for the plot, 1000/T in K^-1
+estimated_IDT = 1  # [s] Estimated ignition delay time in seconds 
 
 # Define mechanism-specific species names, fuel and oxidiser
 fuel_gri = 'CH4:1'     # GRI-Mech naming
@@ -33,9 +41,9 @@ gas_rmg_slow = ct.Solution("mechanisms_archive/rmg_99conv_1h25min_20250707/metha
 ref_species = 'CH'  # Reference species for IDT determination
 
 # Arrays to store results
-idt_gri = np.zeros(len(T))
-idt_rmg_fast = np.zeros(len(T))
-idt_rmg_slow = np.zeros(len(T))
+idt_gri = np.zeros(len(T_gri))
+idt_rmg_fast = np.zeros(len(T_rmg))
+idt_rmg_slow = np.zeros(len(T_rmg))
 
 def calculate_Ignition_Delay_simple(temperature_array, gas, mechanism_name, results_array, fuel):
     for j, temp in enumerate(temperature_array):
@@ -75,20 +83,23 @@ def calculate_Ignition_Delay_simple(temperature_array, gas, mechanism_name, resu
 
 # Calculate IDT for all three mechanisms
 print("Calculating IDT for GRI-Mech 3.0...")
-calculate_Ignition_Delay_simple(T, gas_gri, "GRI-Mech 3.0", idt_gri, fuel_gri)
+calculate_Ignition_Delay_simple(T_gri, gas_gri, "GRI-Mech 3.0", idt_gri, fuel_gri)
 
 print("\nCalculating IDT for RMG 95% conv...")
-calculate_Ignition_Delay_simple(T, gas_rmg_fast, "RMG 95% conv", idt_rmg_fast, fuel_rmg)
+calculate_Ignition_Delay_simple(T_rmg, gas_rmg_fast, "RMG 95% conv", idt_rmg_fast, fuel_rmg)
 
 print("\nCalculating IDT for RMG 99% conv...")
-calculate_Ignition_Delay_simple(T, gas_rmg_slow, "RMG 99% conv", idt_rmg_slow, fuel_rmg)
+calculate_Ignition_Delay_simple(T_rmg, gas_rmg_slow, "RMG 99% conv", idt_rmg_slow, fuel_rmg)
 # -------------------- Plot Section --------------------------------
-
 fig, ax = plt.subplots(1, 1, figsize=(10, 8))
+#  Plot experimental data
+exp_temp = IDT_1.iloc[:, 0] 
+exp_idt = IDT_1.iloc[:, 1]    
+ax.scatter(exp_temp, exp_idt, marker='o', color='black', label='Experimental Data, 1atm, phi=1.0', s=50)
 # Plot all three mechanisms
-ax.semilogy(xaxis, idt_gri, 'b-', linewidth=2, marker='o', label='GRI-Mech 3.0')
-ax.semilogy(xaxis, idt_rmg_fast, 'g-', linewidth=2, marker='s', label='RMG 95% conv (26min)')
-ax.semilogy(xaxis, idt_rmg_slow, 'r-', linewidth=2, marker='^', label='RMG 99% conv (1h25min)')
+ax.semilogy(xaxis_gri, idt_gri, 'b-', linewidth=2, label='GRI-Mech 3.0')
+ax.semilogy(xaxis_rmg, idt_rmg_fast, 'g-', linewidth=2,  label='RMG 95% conv (26min)')
+ax.semilogy(xaxis_rmg, idt_rmg_slow, 'r-', linewidth=2, label='RMG 99% conv (1h25min)')
 
 # Add secondary x-axis on the top for Temperature (K)
 def invT_to_T(invT):  # Converts 1000/T back to T in K
@@ -111,20 +122,7 @@ secax.set_xlabel('Temperature [K]')
 
 plt.tight_layout()
 #plt.show()  # Show the plot in interactive mode
-plt.savefig('/home/brukare/Combustion/RMG_methane/Analysis_scripts/ignition_delay_comparison.png', dpi=300)
-
-# -------------------- Save Results --------------------------------
-
-### Save results to CSV
-##results_df = pd.DataFrame({
-##    'Temperature_K': T,
-##    'Inverse_Temperature_1000_per_K': xaxis,
-##    'GRI_Mech_IDT_microseconds': idt_gri,
-##    'RMG_95conv_IDT_microseconds': idt_rmg_95,
-##    'RMG_99conv_IDT_microseconds': idt_rmg_99
-##})
-##
-##results_df.to_csv('/home/brukare/Combustion/RMG_methane/ignition_delay_comparison.csv', index=False)
+plt.savefig('/home/brukare/Combustion/RMG_methane/Analysis_scripts/ignition_delay_with_data.png', dpi=300)
 
 # Print summary
 print("\n" + "="*60)
@@ -133,7 +131,4 @@ print("="*60)
 print(f"GRI-Mech 3.0:        {gas_gri.n_species} species, {gas_gri.n_reactions} reactions")
 print(f"RMG 95% conv:        {gas_rmg_fast.n_species} species, {gas_rmg_fast.n_reactions} reactions")
 print(f"RMG 99% conv:        {gas_rmg_slow.n_species} species, {gas_rmg_slow.n_reactions} reactions")
-### print(f"\nFiles saved:")
-### print(f"  - ignition_delay_comparison.csv")
-### print(f"  - ignition_delay_comparison.png")
 print("="*60)
