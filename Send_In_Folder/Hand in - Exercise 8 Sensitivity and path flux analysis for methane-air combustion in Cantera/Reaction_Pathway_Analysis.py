@@ -5,6 +5,8 @@ import cantera as ct
 gas = ct.Solution('gri30.yaml')
 # Set equivalence ratio to 1 for stoichiometric methane-air combustion
 gas.set_equivalence_ratio(1.0, 'CH4', 'O2:2.0, N2:7.52')
+
+
 gas.TP = 1500, 1e5  # 1500 K, 1 bar (100000 Pa)
 
 # Define the element to follow in the reaction path diagram:

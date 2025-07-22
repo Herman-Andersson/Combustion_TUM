@@ -34,7 +34,7 @@ species(
 
 # Reactor conditions to ensure comprehensive mechanism
 simpleReactor(
-    temperature=[(700,'K'), (1400,'K')],  # Only 2 temperatures
+    temperature=[(700,'K'), (2000,'K')],  # Only 2 temperatures
     pressure=(1,'bar'),
     nSims=10,
     initialMoleFractions={

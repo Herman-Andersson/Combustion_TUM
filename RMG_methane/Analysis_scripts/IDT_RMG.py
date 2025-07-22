@@ -36,7 +36,7 @@ ref_species_rmg = 'CH(9)' # RMG naming
 gas_gri = ct.Solution("gri30.yaml")
 gas_rmg_fast = ct.Solution("mechanisms_archive/rmg_95conv_26min_20250707/methane_95conv_26min.yaml")
 gas_rmg_slow = ct.Solution("mechanisms_archive/rmg_99conv_1h25min_20250707/methane_99conv_1h25min.yaml")
-#gas_rmg = ct.Solution("cantera/chem.yaml")
+gas_rmg_new = ct.Solution("cantera/chem.yaml")
 
 ref_species = 'CH'  # Reference species for IDT determination
 
@@ -44,6 +44,7 @@ ref_species = 'CH'  # Reference species for IDT determination
 idt_gri = np.zeros(len(T_gri))
 idt_rmg_fast = np.zeros(len(T_rmg))
 idt_rmg_slow = np.zeros(len(T_rmg))
+idt_rmg_new = np.zeros(len(T_rmg))
 
 def calculate_Ignition_Delay_simple(temperature_array, gas, mechanism_name, results_array, fuel):
     for j, temp in enumerate(temperature_array):
@@ -90,6 +91,10 @@ calculate_Ignition_Delay_simple(T_rmg, gas_rmg_fast, "RMG 95% conv", idt_rmg_fas
 
 print("\nCalculating IDT for RMG 99% conv...")
 calculate_Ignition_Delay_simple(T_rmg, gas_rmg_slow, "RMG 99% conv", idt_rmg_slow, fuel_rmg)
+
+print("\nCalculating IDT for RMG 99% conv...")
+calculate_Ignition_Delay_simple(T_rmg, gas_rmg_new, "RMG 99% conv", idt_rmg_new, fuel_rmg)
+
 # -------------------- Plot Section --------------------------------
 fig, ax = plt.subplots(1, 1, figsize=(10, 8))
 #  Plot experimental data
@@ -100,6 +105,7 @@ ax.scatter(exp_temp, exp_idt, marker='o', color='black', label='Experimental Dat
 ax.semilogy(xaxis_gri, idt_gri, 'b-', linewidth=2, label='GRI-Mech 3.0')
 ax.semilogy(xaxis_rmg, idt_rmg_fast, 'g-', linewidth=2,  label='RMG 95% conv (26min)')
 ax.semilogy(xaxis_rmg, idt_rmg_slow, 'r-', linewidth=2, label='RMG 99% conv (1h25min)')
+ax.semilogy(xaxis_rmg, idt_rmg_new, 'p-', linewidth=2, label='RMG 99% conv (700-2000K)', marker=None)
 
 # Add secondary x-axis on the top for Temperature (K)
 def invT_to_T(invT):  # Converts 1000/T back to T in K

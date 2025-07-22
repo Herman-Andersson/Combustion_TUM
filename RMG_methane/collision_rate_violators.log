@@ -1,0 +1,29 @@
+*** Collision rate limit violators report ***
+"Violation factor" is the ratio of the rate coefficient to the collision limit rate at the relevant conditions
+
+! Library reaction: GRI-Mech3.0
+OH(6)+H2O2(8)<=>HO2(7)+H2O(28)                      2.000000e+12 0.000     0.427    
+DUPLICATE
+! Library reaction: GRI-Mech3.0
+OH(6)+H2O2(8)<=>HO2(7)+H2O(28)                      1.700000e+18 0.000     29.410   
+DUPLICATE
+
+
+Direction: forward
+Violation factor: 2.98
+Violation condition: 2000.0 K, 1.0 bar
+
+
+! Library reaction: GRI-Mech3.0
+OH(6)+H2O2(8)<=>HO2(7)+H2O(28)                      2.000000e+12 0.000     0.427    
+DUPLICATE
+! Library reaction: GRI-Mech3.0
+OH(6)+H2O2(8)<=>HO2(7)+H2O(28)                      1.700000e+18 0.000     29.410   
+DUPLICATE
+
+
+Direction: forward
+Violation factor: 2.98
+Violation condition: 2000.0 K, 1.0 bar
+
+

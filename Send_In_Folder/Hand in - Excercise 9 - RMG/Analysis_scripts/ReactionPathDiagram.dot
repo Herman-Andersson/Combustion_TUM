@@ -1,86 +1,104 @@
 digraph reaction_paths {
 node[fontsize=20,shape="box"]
-s10 -> s14[fontname="CMU Serif Roman", penwidth=2.62, arrowsize=1.31, color="0.7, 0.537, 0.9"
-, label=" 0.0367"];
-s16 -> s14[fontname="CMU Serif Roman", penwidth=5.5, arrowsize=2.75, color="0.7, 1.11, 0.9"
-, label=" 0.613"];
-s11 -> s14[fontname="CMU Serif Roman", penwidth=3.03, arrowsize=1.51, color="0.7, 0.555, 0.9"
-, label=" 0.0547"];
-s12 -> s14[fontname="CMU Serif Roman", penwidth=3.52, arrowsize=1.76, color="0.7, 0.589, 0.9"
-, label=" 0.0887"];
-s14 -> s15[fontname="CMU Serif Roman", penwidth=3.03, arrowsize=1.52, color="0.7, 0.555, 0.9"
-, label=" 0.0549"];
-s27 -> s14[fontname="CMU Serif Roman", penwidth=3.34, arrowsize=1.67, color="0.7, 0.574, 0.9"
-, label=" 0.0741"];
-s28 -> s14[fontname="CMU Serif Roman", penwidth=2.05, arrowsize=1.03, color="0.7, 0.521, 0.9"
-, label=" 0.0211"];
-s11 -> s10[fontname="CMU Serif Roman", penwidth=3.53, arrowsize=1.76, color="0.7, 0.589, 0.9"
-, label=" 0.0893"];
-s10 -> s15[fontname="CMU Serif Roman", penwidth=2.77, arrowsize=1.39, color="0.7, 0.543, 0.9"
-, label=" 0.0426"];
-s17 -> s16[fontname="CMU Serif Roman", penwidth=5.39, arrowsize=2.7, color="0.7, 1.05, 0.9"
-, label=" 0.553"];
-s23 -> s16[fontname="CMU Serif Roman", penwidth=2.11, arrowsize=1.05, color="0.7, 0.522, 0.9"
-, label=" 0.0222"];
-s24 -> s16[fontname="CMU Serif Roman", penwidth=2.44, arrowsize=1.22, color="0.7, 0.531, 0.9"
-, label=" 0.0308"];
-s12 -> s11[fontname="CMU Serif Roman", penwidth=4, arrowsize=2, color="0.7, 0.641, 0.9"
-, label=" 0.141"];
-s12 -> s17[fontname="CMU Serif Roman", penwidth=4.13, arrowsize=2.06, color="0.7, 0.661, 0.9"
-, label=" 0.161"];
-s13 -> s12[fontname="CMU Serif Roman", penwidth=6, arrowsize=3, color="0.7, 1.5, 0.9"
+s13 -> s12[fontname="CMU Serif Roman", penwidth=2.72, arrowsize=1.36, color="0.7, 0.54, 0.9"
+, label=" 0.0404"];
+s14 -> s12[fontname="CMU Serif Roman", penwidth=5.13, arrowsize=2.56, color="0.7, 0.925, 0.9"
+, label=" 0.425"];
+s15 -> s12[fontname="CMU Serif Roman", penwidth=2.95, arrowsize=1.47, color="0.7, 0.551, 0.9"
+, label=" 0.0505"];
+s16 -> s12[fontname="CMU Serif Roman", penwidth=3.6, arrowsize=1.8, color="0.7, 0.596, 0.9"
+, label=" 0.0961"];
+s17 -> s12[fontname="CMU Serif Roman", penwidth=3.99, arrowsize=1.99, color="0.7, 0.64, 0.9"
+, label=" 0.14"];
+s12 -> s18[fontname="CMU Serif Roman", penwidth=2.97, arrowsize=1.49, color="0.7, 0.552, 0.9"
+, label=" 0.0517"];
+s24 -> s12[fontname="CMU Serif Roman", penwidth=2.84, arrowsize=1.42, color="0.7, 0.545, 0.9"
+, label=" 0.0454"];
+s15 -> s13[fontname="CMU Serif Roman", penwidth=3.63, arrowsize=1.81, color="0.7, 0.598, 0.9"
+, label=" 0.0981"];
+s16 -> s13[fontname="CMU Serif Roman", penwidth=2.14, arrowsize=1.07, color="0.7, 0.523, 0.9"
+, label=" 0.023"];
+s13 -> s18[fontname="CMU Serif Roman", penwidth=2.82, arrowsize=1.41, color="0.7, 0.545, 0.9"
+, label=" 0.0447"];
+s17 -> s14[fontname="CMU Serif Roman", penwidth=4.88, arrowsize=2.44, color="0.7, 0.836, 0.9"
+, label=" 0.336"];
+s27 -> s14[fontname="CMU Serif Roman", penwidth=2.5, arrowsize=1.25, color="0.7, 0.533, 0.9"
+, label=" 0.0327"];
+s42 -> s14[fontname="CMU Serif Roman", penwidth=2.15, arrowsize=1.07, color="0.7, 0.523, 0.9"
+, label=" 0.0231"];
+s16 -> s15[fontname="CMU Serif Roman", penwidth=4.06, arrowsize=2.03, color="0.7, 0.65, 0.9"
+, label=" 0.15"];
+s16 -> s17[fontname="CMU Serif Roman", penwidth=4.21, arrowsize=2.1, color="0.7, 0.673, 0.9"
+, label=" 0.173"];
+s3 -> s16[fontname="CMU Serif Roman", penwidth=6, arrowsize=3, color="0.7, 1.5, 0.9"
 , label=" 1"];
-s12 -> s19[fontname="CMU Serif Roman", penwidth=4.64, arrowsize=2.32, color="0.7, 0.763, 0.9"
-, label=" 0.263"];
-s12 -> s25[fontname="CMU Serif Roman", penwidth=2.85, arrowsize=1.42, color="0.7, 0.546, 0.9"
-, label=" 0.0459"];
-s12 -> s26[fontname="CMU Serif Roman", penwidth=4.17, arrowsize=2.08, color="0.7, 0.666, 0.9"
-, label=" 0.166"];
-s18 -> s17[fontname="CMU Serif Roman", penwidth=2.53, arrowsize=1.27, color="0.7, 0.534, 0.9"
-, label=" 0.0336"];
-s19 -> s17[fontname="CMU Serif Roman", penwidth=4.6, arrowsize=2.3, color="0.7, 0.754, 0.9"
-, label=" 0.254"];
-s23 -> s17[fontname="CMU Serif Roman", penwidth=2.11, arrowsize=1.05, color="0.7, 0.522, 0.9"
-, label=" 0.0222"];
-s20 -> s18[fontname="CMU Serif Roman", penwidth=2, arrowsize=1, color="0.7, 0.52, 0.9"
-, label=" 0.02"];
-s22 -> s27[fontname="CMU Serif Roman", penwidth=2.25, arrowsize=1.13, color="0.7, 0.526, 0.9"
-, label=" 0.0256"];
-s23 -> s22[fontname="CMU Serif Roman", penwidth=3.89, arrowsize=1.95, color="0.7, 0.627, 0.9"
-, label=" 0.127"];
-s28 -> s27[fontname="CMU Serif Roman", penwidth=3.09, arrowsize=1.54, color="0.7, 0.558, 0.9"
-, label=" 0.0578"];
-s24 -> s23[fontname="CMU Serif Roman", penwidth=4.74, arrowsize=2.37, color="0.7, 0.792, 0.9"
-, label=" 0.292"];
-s23 -> s51[fontname="CMU Serif Roman", penwidth=3.78, arrowsize=1.89, color="0.7, 0.615, 0.9"
-, label=" 0.115"];
-s51 -> s28[fontname="CMU Serif Roman", penwidth=4.04, arrowsize=2.02, color="0.7, 0.647, 0.9"
-, label=" 0.147"];
-s25 -> s24[fontname="CMU Serif Roman", penwidth=4.74, arrowsize=2.37, color="0.7, 0.791, 0.9"
-, label=" 0.291"];
-s24 -> s51[fontname="CMU Serif Roman", penwidth=2.51, arrowsize=1.26, color="0.7, 0.533, 0.9"
-, label=" 0.033"];
-s26 -> s25[fontname="CMU Serif Roman", penwidth=4.63, arrowsize=2.32, color="0.7, 0.762, 0.9"
-, label=" 0.262"];
-s10 [ fontname="CMU Serif Roman", label="CH2"];
-s11 [ fontname="CMU Serif Roman", label="CH2(S)"];
-s12 [ fontname="CMU Serif Roman", label="CH3"];
-s13 [ fontname="CMU Serif Roman", label="CH4"];
-s14 [ fontname="CMU Serif Roman", label="CO"];
-s15 [ fontname="CMU Serif Roman", label="CO2"];
-s16 [ fontname="CMU Serif Roman", label="HCO"];
-s17 [ fontname="CMU Serif Roman", label="CH2O"];
-s18 [ fontname="CMU Serif Roman", label="CH2OH"];
-s19 [ fontname="CMU Serif Roman", label="CH3O"];
-s20 [ fontname="CMU Serif Roman", label="CH3OH"];
-s22 [ fontname="CMU Serif Roman", label="C2H2"];
-s23 [ fontname="CMU Serif Roman", label="C2H3"];
-s24 [ fontname="CMU Serif Roman", label="C2H4"];
-s25 [ fontname="CMU Serif Roman", label="C2H5"];
-s26 [ fontname="CMU Serif Roman", label="C2H6"];
-s27 [ fontname="CMU Serif Roman", label="HCCO"];
-s28 [ fontname="CMU Serif Roman", label="CH2CO"];
-s51 [ fontname="CMU Serif Roman", label="CH2CHO"];
- label = "Scale = 17\l Reaction path diagram following C";
+s16 -> s20[fontname="CMU Serif Roman", penwidth=4.26, arrowsize=2.13, color="0.7, 0.683, 0.9"
+, label=" 0.183"];
+s27 -> s16[fontname="CMU Serif Roman", penwidth=2.2, arrowsize=1.1, color="0.7, 0.524, 0.9"
+, label=" 0.0244"];
+s16 -> s28[fontname="CMU Serif Roman", penwidth=2.96, arrowsize=1.48, color="0.7, 0.551, 0.9"
+, label=" 0.0513"];
+s16 -> s29[fontname="CMU Serif Roman", penwidth=4.25, arrowsize=2.12, color="0.7, 0.68, 0.9"
+, label=" 0.18"];
+s16 -> s36[fontname="CMU Serif Roman", penwidth=2.79, arrowsize=1.39, color="0.7, 0.543, 0.9"
+, label=" 0.0432"];
+s19 -> s17[fontname="CMU Serif Roman", penwidth=2.78, arrowsize=1.39, color="0.7, 0.543, 0.9"
+, label=" 0.0429"];
+s20 -> s17[fontname="CMU Serif Roman", penwidth=4.19, arrowsize=2.09, color="0.7, 0.67, 0.9"
+, label=" 0.17"];
+s25 -> s17[fontname="CMU Serif Roman", penwidth=2.49, arrowsize=1.25, color="0.7, 0.532, 0.9"
+, label=" 0.0323"];
+s23 -> s24[fontname="CMU Serif Roman", penwidth=2.23, arrowsize=1.11, color="0.7, 0.525, 0.9"
+, label=" 0.0249"];
+s25 -> s23[fontname="CMU Serif Roman", penwidth=3.85, arrowsize=1.93, color="0.7, 0.622, 0.9"
+, label=" 0.122"];
+s26 -> s24[fontname="CMU Serif Roman", penwidth=2.53, arrowsize=1.26, color="0.7, 0.533, 0.9"
+, label=" 0.0334"];
+s27 -> s25[fontname="CMU Serif Roman", penwidth=4.83, arrowsize=2.41, color="0.7, 0.817, 0.9"
+, label=" 0.317"];
+s25 -> s33[fontname="CMU Serif Roman", penwidth=3.63, arrowsize=1.81, color="0.7, 0.598, 0.9"
+, label=" 0.0981"];
+s25 -> s47[fontname="CMU Serif Roman", penwidth=2.26, arrowsize=1.13, color="0.7, 0.526, 0.9"
+, label=" 0.0259"];
+s33 -> s26[fontname="CMU Serif Roman", penwidth=3.55, arrowsize=1.78, color="0.7, 0.591, 0.9"
+, label=" 0.0913"];
+s28 -> s27[fontname="CMU Serif Roman", penwidth=4.83, arrowsize=2.42, color="0.7, 0.82, 0.9"
+, label=" 0.32"];
+s27 -> s33[fontname="CMU Serif Roman", penwidth=2.57, arrowsize=1.29, color="0.7, 0.535, 0.9"
+, label=" 0.0351"];
+s45 -> s27[fontname="CMU Serif Roman", penwidth=2.01, arrowsize=1.01, color="0.7, 0.52, 0.9"
+, label=" 0.0203"];
+s29 -> s28[fontname="CMU Serif Roman", penwidth=4.71, arrowsize=2.36, color="0.7, 0.783, 0.9"
+, label=" 0.283"];
+s36 -> s38[fontname="CMU Serif Roman", penwidth=2.78, arrowsize=1.39, color="0.7, 0.543, 0.9"
+, label=" 0.0427"];
+s38 -> s42[fontname="CMU Serif Roman", penwidth=2.77, arrowsize=1.38, color="0.7, 0.542, 0.9"
+, label=" 0.0423"];
+s47 -> s45[fontname="CMU Serif Roman", penwidth=2.7, arrowsize=1.35, color="0.7, 0.539, 0.9"
+, label=" 0.0395"];
+s3 [ fontname="CMU Serif Roman", label="CH4(1)"];
+s12 [ fontname="CMU Serif Roman", label="CO(10)"];
+s13 [ fontname="CMU Serif Roman", label="CH2(11)"];
+s14 [ fontname="CMU Serif Roman", label="HCO(12)"];
+s15 [ fontname="CMU Serif Roman", label="CH2(S)(13)"];
+s16 [ fontname="CMU Serif Roman", label="CH3(14)"];
+s17 [ fontname="CMU Serif Roman", label="CH2O(15)"];
+s18 [ fontname="CMU Serif Roman", label="CO2(16)"];
+s19 [ fontname="CMU Serif Roman", label="CH2OH(17)"];
+s20 [ fontname="CMU Serif Roman", label="CH3O(18)"];
+s23 [ fontname="CMU Serif Roman", label="C2H2(21)"];
+s24 [ fontname="CMU Serif Roman", label="HCCO(22)"];
+s25 [ fontname="CMU Serif Roman", label="C2H3(23)"];
+s26 [ fontname="CMU Serif Roman", label="CH2CO(24)"];
+s27 [ fontname="CMU Serif Roman", label="C2H4(25)"];
+s28 [ fontname="CMU Serif Roman", label="C2H5(26)"];
+s29 [ fontname="CMU Serif Roman", label="C2H6(27)"];
+s33 [ fontname="CMU Serif Roman", label="CH2CHO(31)"];
+s36 [ fontname="CMU Serif Roman", label="CH3OO(37)"];
+s38 [ fontname="CMU Serif Roman", label="CH2OOH(39)"];
+s42 [ fontname="CMU Serif Roman", label="[CH2][O](70)"];
+s45 [ fontname="CMU Serif Roman", label="C3H6(272)"];
+s47 [ fontname="CMU Serif Roman", label="C[C]C-2(1135)"];
+ label = "Scale = 16\l Reaction path diagram following C";
  fontname = "CMU Serif Roman";
 }

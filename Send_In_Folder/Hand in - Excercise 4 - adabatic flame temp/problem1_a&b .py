@@ -18,7 +18,7 @@ from scipy.integrate import quad # Is this one used?
 #h_fuel = float(input("Give fuel heating value h_(f_i) [kJ/kmol]: "))
 
 #----------------------------------
-# Methane combustion parameters for testing code
+# Methane combustion parameters for testing code (commet out this section to use input code above)
 x = 1
 y = 4
 h_fuel = -74831
@@ -232,9 +232,8 @@ print("Calculation completed!")
 #print(f"AFT with air: {AFT}")
 #print(f"AFT with pure O2: {AFT_O2}")
 
-# Should be 2200
+
 print(f"Maximum AFT with pure O2: {np.max(AFT):.2f} K at phi = {Phi[np.argmax(AFT)]:.2f}")
-# should be 4700
 print(f"Maximum AFT with pure O2: {np.max(AFT_O2):.2f} K at phi = {Phi[np.argmax(AFT_O2)]:.2f}")
 
 # Print PHI and AFT values on two lines

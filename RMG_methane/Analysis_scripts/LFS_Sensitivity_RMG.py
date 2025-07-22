@@ -13,7 +13,9 @@ def flame_sensitivity_analysis(pressure_atm, label, gri):
     if gri == True:
         gas = ct.Solution("gri30.yaml")
     else:
-        gas = ct.Solution("mechanisms_archive/rmg_99conv_1h25min_20250707/methane_99conv_1h25min.yaml")
+        gas = ct.Solution("/home/brukare/Combustion/RMG_methane/cantera/chem.yaml")
+       ### gas = ct.Solution("../cantera/chem.yaml") # Updated with temperature for range of 700-2000 K
+        ### gas = ct.Solution("mechanisms_archive/rmg_99conv_1h25min_20250707/methane_99conv_1h25min.yaml")
 
     # Define initial conditions
     T0 = 298.0  # Initial temperature in K (298 K as per problem statement)
